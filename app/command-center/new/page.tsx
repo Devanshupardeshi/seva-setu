@@ -149,13 +149,35 @@ export default function NewIncidentPage() {
             Declare a new incident
           </h1>
         </div>
-        <p className="mt-1 max-w-2xl text-muted-foreground">
-          Describe what is happening in your own words. Gemini parses the brief
-          into a structured incident and preps the mobilization — you review
-          before dispatching.
-        </p>
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {[
+            { label: "Brahmaputra Flood", type: "flood", severity: "red", location: "Dhemaji", radius: 150, brief: "Urgent flood alert in Dhemaji. Need boat operators and medical support." },
+            { label: "Urban Fire", type: "fire", severity: "red", location: "Bengaluru", radius: 20, brief: "Massive fire reported in industrial area. Need logistics and search rescue teams." },
+            { label: "Heatwave Alert", type: "heatwave", severity: "orange", location: "Nagpur", radius: 100, brief: "Severe heatwave. Need water distribution and first aid volunteers." },
+            { label: "Medical Crisis", type: "medical", severity: "red", location: "Kolkata", radius: 50, brief: "Urgent medical staffing needed for camp. Need doctors and nurses." }
+          ].map((template) => (
+            <button
+              key={template.label}
+              onClick={() => {
+                setType(template.type as IncidentType);
+                setSeverity(template.severity as Severity);
+                setLocation(template.location);
+                setRadius(template.radius);
+                setBrief(template.brief);
+                runParse();
+              }}
+              className="flex flex-col items-start rounded-2xl border border-border bg-card p-4 text-left transition hover:border-primary/50 hover:shadow-md"
+            >
+              <div className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground">Template</div>
+              <div className="mt-1 font-medium text-sm">{template.label}</div>
+              <div className="mt-2 flex items-center gap-1 text-[10px] text-primary">
+                One-click setup <ArrowLeft className="h-2.5 w-2.5 rotate-180" />
+              </div>
+            </button>
+          ))}
+        </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-12">
+        <div className="mt-12 grid gap-6 lg:grid-cols-12">
           {/* Left: composer */}
           <div className="space-y-6 lg:col-span-7">
             <div className="rounded-2xl border border-border bg-card p-5">

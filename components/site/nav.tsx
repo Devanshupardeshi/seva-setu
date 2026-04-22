@@ -71,9 +71,15 @@ export function SiteNav() {
           {isLoggedIn ? (
             <div className="flex items-center gap-3">
               <Button asChild variant="outline" size="sm" className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10">
-                <Link href={role === 'volunteer' ? '/volunteer' : '/ngo'}>
+                <Link href={
+                  role === 'volunteer' ? '/volunteer' : 
+                  role === 'corporate' ? '/corporate' : 
+                  '/ngo'
+                }>
                   {role === 'volunteer' ? <UserIcon className="h-4 w-4" /> : <Building2 className="h-4 w-4" />}
-                  {role === 'volunteer' ? 'Volunteer Dashboard' : 'NGO Console'}
+                  {role === 'volunteer' ? 'Volunteer Dashboard' : 
+                   role === 'corporate' ? 'Corporate Portal' : 
+                   'NGO Console'}
                 </Link>
               </Button>
               <Button variant="ghost" size="icon" onClick={handleLogout} className="h-9 w-9 text-muted-foreground hover:text-destructive">
@@ -124,9 +130,17 @@ export function SiteNav() {
             {isLoggedIn ? (
               <>
                 <Button asChild size="sm" className="w-full justify-start gap-2">
-                  <Link href={role === 'volunteer' ? '/volunteer' : '/ngo'} onClick={() => setOpen(false)}>
+                  <Link href={
+                    role === 'volunteer' ? '/volunteer' : 
+                    role === 'corporate' ? '/corporate' : 
+                    '/ngo'
+                  } onClick={() => setOpen(false)}>
                     {role === 'volunteer' ? <UserIcon className="h-4 w-4" /> : <Building2 className="h-4 w-4" />}
-                    Go to {role === 'volunteer' ? 'Volunteer Dashboard' : 'NGO Console'}
+                    Go to {
+                      role === 'volunteer' ? 'Volunteer Dashboard' : 
+                      role === 'corporate' ? 'Corporate Portal' : 
+                      'NGO Console'
+                    }
                   </Link>
                 </Button>
                 <Button variant="ghost" size="sm" onClick={handleLogout} className="w-full justify-start gap-2 text-destructive">

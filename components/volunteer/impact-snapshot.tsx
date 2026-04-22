@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import type { Volunteer } from "@/lib/types"
 
 export function ImpactSnapshot({ volunteer }: { volunteer: Volunteer }) {
@@ -34,6 +35,11 @@ export function ImpactSnapshot({ volunteer }: { volunteer: Volunteer }) {
           </div>
         ))}
       </div>
+      <Button asChild variant="outline" size="sm" className="mt-6 w-full gap-2 border-primary/20 bg-primary/5 text-primary hover:bg-primary/10">
+        <Link href="/volunteer/certificates/latest">
+          View Latest Certificate
+        </Link>
+      </Button>
     </div>
   )
 }

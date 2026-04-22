@@ -135,6 +135,7 @@ export const needs: Need[] = [
     urgency: "routine",
     slots: 1,
     filled: 0,
+    tags: ["education", "women-only"],
     matchScore: 96,
     matchReason:
       "You've run two teaching gigs, know web design, and speak Hindi + English — a strong fit for this cohort.",
@@ -153,6 +154,7 @@ export const needs: Need[] = [
     urgency: "priority",
     slots: 4,
     filled: 1,
+    tags: ["disaster", "remote"],
     matchScore: 82,
     matchReason:
       "You flagged translation experience during onboarding — Goonj prioritises returning volunteers.",
@@ -171,6 +173,7 @@ export const needs: Need[] = [
     urgency: "routine",
     slots: 3,
     filled: 1,
+    tags: ["health", "women-only"],
     matchScore: 71,
     matchReason:
       "You listed public speaking and you're in Andheri — 5.8 km to the helpline office.",
@@ -188,6 +191,7 @@ export const needs: Need[] = [
     urgency: "routine",
     slots: 20,
     filled: 14,
+    tags: ["environment"],
     matchScore: 64,
     matchReason:
       "Nearby and social. A good reset weekend if you don't want to teach this Saturday.",
@@ -205,6 +209,7 @@ export const needs: Need[] = [
     urgency: "routine",
     slots: 2,
     filled: 0,
+    tags: ["design", "remote", "women-only"],
     matchScore: 88,
     matchReason:
       "You have web design chops and Disha prefers first-time designers for this batch.",
@@ -350,6 +355,13 @@ export const govtNgo: NGO = {
   volunteersActive: 1200,
   since: "1999",
   about: "The primary response agency for Dhemaji district.",
+}
+
+export const incidentOperator = {
+  name: "Comm. Rajesh Kumar",
+  role: "Incident Commander",
+  region: "Dhemaji District",
+  badgeId: "DDMA-9921"
 }
 
 // ----- Helpers -----

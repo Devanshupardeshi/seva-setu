@@ -98,13 +98,15 @@ export default function CommandCenterPage() {
               Share SITREP
             </Button>
             <Button 
+              asChild
               variant="outline" 
               size="sm" 
               className="bg-transparent"
-              onClick={() => window.print()}
             >
-              <FileDown className="mr-1 h-4 w-4" />
-              Export PDF
+              <Link href={`/command-center/reports/${inc.id}`}>
+                <FileDown className="mr-1 h-4 w-4" />
+                SITREP Report
+              </Link>
             </Button>
             <Button asChild variant="destructive" size="sm">
               <Link href="/command-center/new">

@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 import { NgoShell } from "@/components/app-shell/ngo-shell"
 import { ApplicantRow } from "@/components/ngo/applicant-row"
+import { AttendanceQR } from "@/components/ngo/attendance-qr"
 import { Button } from "@/components/ui/button"
 import {
   applicantsByNeedId,
@@ -79,6 +80,7 @@ export default async function NgoNeedApplicantsPage({
               </p>
             </div>
             <div className="flex gap-2">
+              <AttendanceQR needTitle={need.title} />
               <Button variant="outline" size="sm">
                 <Share2 className="mr-1 h-3.5 w-3.5" />
                 Share link

@@ -51,6 +51,7 @@ export type Need = {
   urgency: Urgency
   slots: number
   filled: number
+  tags?: string[] // e.g. ["women-only", "remote"]
   // AI reasoning shown in card
   matchScore: number // 0..100 for the current volunteer
   matchReason: string
@@ -83,12 +84,47 @@ export type Incident = {
   id: string
   type: "flood" | "fire" | "earthquake" | "medical" | "heatwave"
   title: string
+  severity: "low" | "medium" | "high" | "critical"
+  activatedAt: string
   epicenter: Geo
   radiusKm: number
-  severity: "yellow" | "orange" | "red"
-  activatedAt: string
   skillsNeeded: { skill: string; needed: number; filled: number }[]
+  respondersOnSite: number
   respondersEnRoute: number
   respondersCommitted: number
-  respondersOnSite: number
+}
+
+export type CorporateUser = {
+  id: string
+  name: string
+  company: string
+  location: Geo
+  employeesCount: number
+  verified: boolean
+}
+
+export type CSRStat = {
+  label: string
+  value: string | number
+  trend?: string
+  color?: string
+}
+
+export type CompanyNeed = {
+  id: string
+  title: string
+  partnerNgo: string
+  employeesRequested: number
+  employeesJoined: number
+  status: "active" | "filled" | "completed"
+  deadline: string
+}
+
+export type TeamEvent = {
+  id: string
+  title: string
+  dept: string
+  date: string
+  slots: number
+  booked: number
 }

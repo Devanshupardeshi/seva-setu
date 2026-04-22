@@ -1,9 +1,10 @@
 "use client"
-
+import { useState } from "react"
 import Link from "next/link"
 import { Mic, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { VolunteerShell } from "@/components/app-shell/volunteer-shell"
+import { cn } from "@/lib/utils"
 import { ProfileCard } from "@/components/volunteer/profile-card"
 import { ActiveMatch } from "@/components/volunteer/active-match"
 import { MatchCard } from "@/components/volunteer/match-card"
@@ -46,12 +47,19 @@ export default function VolunteerHome() {
     upcomingNeed ? activeNgos.find(n => n.id === upcomingNeed.ngoId) : null
   , [upcomingNeed, activeNgos])
 
+  const [womenOnly, setWomenOnly] = useState(false)
+
   // Feed = everything other than the already-accepted one, ranked by match score
   const feed = useMemo(() => {
-    return activeNeeds
+    let filtered = activeNeeds
       .filter((n) => n.id !== upcomingNeed?.id)
-      .sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0))
-  }, [activeNeeds, upcomingNeed])
+
+    if (womenOnly) {
+      filtered = filtered.filter(n => n.tags?.includes('women-only'))
+    }
+
+    return filtered.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0))
+  }, [activeNeeds, upcomingNeed, womenOnly])
 
   return (
     <VolunteerShell
@@ -72,12 +80,22 @@ export default function VolunteerHome() {
               this weekend.
             </p>
           </div>
-          <Button asChild variant="outline" size="sm">
-            <Link href="/volunteer/onboarding">
-              <Mic className="mr-1.5 h-4 w-4" />
-              Re-record your profile
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant={womenOnly ? "secondary" : "outline"} 
+              size="sm" 
+              className={cn("gap-2", womenOnly && "border-pink-500/20 bg-pink-500/10 text-pink-600 hover:bg-pink-500/20")}
+              onClick={() => setWomenOnly(!womenOnly)}
+            >
+              Women-only tasks
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/volunteer/onboarding">
+                <Mic className="mr-1.5 h-4 w-4" />
+                Re-record your profile
+              </Link>
+            </Button>
+          </div>
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_380px]">
