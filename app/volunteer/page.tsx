@@ -1,0 +1,120 @@
+"use client"
+
+import Link from "next/link"
+import { Mic, Sparkles } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { VolunteerShell } from "@/components/app-shell/volunteer-shell"
+import { ProfileCard } from "@/components/volunteer/profile-card"
+import { ActiveMatch } from "@/components/volunteer/active-match"
+import { MatchCard } from "@/components/volunteer/match-card"
+import { ImpactSnapshot } from "@/components/volunteer/impact-snapshot"
+import {
+  currentVolunteer,
+  matches as mockMatches,
+  needs as mockNeeds,
+  ngos as mockNgos,
+} from "@/lib/mock-data"
+import { useCollection } from "@/hooks/use-firestore"
+import { Match, Need, NGO } from "@/lib/types"
+import { where } from "firebase/firestore"
+import { useMemo } from "react"
+
+export default function VolunteerHome() {
+  // Real-time matches for this volunteer
+  const { data: liveMatches } = useCollection<Match>(
+    "matches", 
+    [where("volunteerId", "==", currentVolunteer.id)],
+    mockMatches
+  )
+
+  // Real-time needs and NGOs
+  const { data: liveNeeds } = useCollection<Need>("needs", [], mockNeeds)
+  const { data: liveNgos } = useCollection<NGO>("ngos", [], mockNgos)
+
+  const activeMatches = liveMatches || mockMatches
+  const activeNeeds = liveNeeds || mockNeeds
+  const activeNgos = liveNgos || mockNgos
+
+  // Calculate upcoming match
+  const upcomingMatch = activeMatches.find((m) => m.status === "accepted")
+  
+  const upcomingNeed = useMemo(() => 
+    upcomingMatch ? activeNeeds.find(n => n.id === upcomingMatch.needId) : null
+  , [upcomingMatch, activeNeeds])
+
+  const upcomingNgo = useMemo(() => 
+    upcomingNeed ? activeNgos.find(n => n.id === upcomingNeed.ngoId) : null
+  , [upcomingNeed, activeNgos])
+
+  // Feed = everything other than the already-accepted one, ranked by match score
+  const feed = useMemo(() => {
+    return activeNeeds
+      .filter((n) => n.id !== upcomingNeed?.id)
+      .sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0))
+  }, [activeNeeds, upcomingNeed])
+
+  return (
+    <VolunteerShell
+      userName={currentVolunteer.name}
+      userLocation={currentVolunteer.location.label}
+    >
+      <div className="mx-auto max-w-6xl px-4 py-8 md:px-6 md:py-10">
+        <div className="flex flex-col items-start justify-between gap-3 md:flex-row md:items-end">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+              Saturday, 25 April
+            </p>
+            <h1 className="mt-2 text-balance font-serif text-4xl leading-tight tracking-tight md:text-5xl">
+              Welcome back, {currentVolunteer.name.split(" ")[0]}.
+            </h1>
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
+              Here are the opportunities our matching engine surfaced for you
+              this weekend.
+            </p>
+          </div>
+          <Button asChild variant="outline" size="sm">
+            <Link href="/volunteer/onboarding">
+              <Mic className="mr-1.5 h-4 w-4" />
+              Re-record your profile
+            </Link>
+          </Button>
+        </div>
+
+        <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_380px]">
+          <div className="flex flex-col gap-6">
+            {upcomingNeed && upcomingNgo && (
+              <ActiveMatch need={upcomingNeed} ngo={upcomingNgo} />
+            )}
+
+            <div>
+              <div className="flex items-baseline justify-between">
+                <h2 className="font-serif text-2xl leading-tight tracking-tight">
+                  Matched for you
+                </h2>
+                <span className="flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  <Sparkles className="h-3 w-3" />
+                  Vertex AI · live feed
+                </span>
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Ranked by skill fit, distance, and availability. Re-calculated in real-time as NGOs post needs.
+              </p>
+              <div className="mt-5 grid gap-4 md:grid-cols-2">
+                {feed.map((need) => {
+                  const ngo = activeNgos.find(n => n.id === need.ngoId)
+                  if (!ngo) return null
+                  return <MatchCard key={need.id} need={need} ngo={ngo} />
+                })}
+              </div>
+            </div>
+          </div>
+
+          <aside className="flex flex-col gap-6">
+            <ProfileCard volunteer={currentVolunteer} />
+            <ImpactSnapshot volunteer={currentVolunteer} />
+          </aside>
+        </div>
+      </div>
+    </VolunteerShell>
+  )
+}

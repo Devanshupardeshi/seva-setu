@@ -1,0 +1,22 @@
+{
+  "name": "SevaSetu",
+  "short_name": "SevaSetu",
+  "description": "Connecting willing hands with urgent needs during crises.",
+  "start_url": "/volunteer",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#113824",
+  "icons": [
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
