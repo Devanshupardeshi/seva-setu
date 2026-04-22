@@ -56,7 +56,7 @@ export function Hero() {
             ) : (
               <>
                 <Button asChild size="lg" className="h-12 px-6 text-base">
-                  <Link href="/volunteer/onboarding">
+                  <Link href="/volunteer/signup">
                     I want to help
                     <ArrowRight className="ml-1 h-4 w-4" />
                   </Link>

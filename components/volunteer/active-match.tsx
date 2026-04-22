@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ArrowRight, CalendarCheck, Clock, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { AttendanceQRModal } from "./attendance-qr-modal"
 import type { NGO, Need } from "@/lib/types"
 
 function formatWhen(iso: string) {
@@ -47,6 +48,11 @@ export function ActiveMatch({ need, ngo }: { need: Need; ngo: NGO }) {
             <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </Button>
+        <AttendanceQRModal 
+          volunteerId="v_1" // currentVolunteer.id
+          needId={need.id}
+          matchId={`m_${need.id}`}
+        />
         <Button asChild variant="outline">
           <Link href={`/volunteer/matches/${need.id}#route`}>View route</Link>
         </Button>

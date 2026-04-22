@@ -92,7 +92,7 @@ export function SiteNav() {
                 <Link href="/login">NGO login</Link>
               </Button>
               <Button asChild size="sm">
-                <Link href="/volunteer/onboarding">I want to help</Link>
+                <Link href="/volunteer/signup">I want to help</Link>
               </Button>
             </>
           )}
@@ -156,7 +156,7 @@ export function SiteNav() {
                   </Link>
                 </Button>
                 <Button asChild size="sm" className="w-full">
-                  <Link href="/volunteer/onboarding" onClick={() => setOpen(false)}>
+                  <Link href="/volunteer/signup" onClick={() => setOpen(false)}>
                     I want to help
                   </Link>
                 </Button>
