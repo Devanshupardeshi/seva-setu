@@ -51,10 +51,10 @@ async function seed() {
     try {
       initializeApp({
         credential: cert({
-          projectId,
-          clientEmail,
-          privateKey,
-        }),
+          project_id: projectId,
+          client_email: clientEmail,
+          private_key: privateKey,
+        } as any),
       });
     } catch (e) {
       console.error('Failed to initialize Admin SDK:', e);

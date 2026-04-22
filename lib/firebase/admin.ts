@@ -1,19 +1,20 @@
-import { initializeApp, getApps, cert, type ServiceAccount } from "firebase-admin/app"
+import { initializeApp, getApps, cert } from "firebase-admin/app"
 import { getAuth } from "firebase-admin/auth"
 import { getFirestore } from "firebase-admin/firestore"
 
-const serviceAccount: ServiceAccount = {
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!,
-  clientEmail: process.env.FIREBASE_CLIENT_EMAIL!,
-  // The private key comes as a string with escaped newlines from env
-  privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+const serviceAccount = {
+  project_id: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  client_email: process.env.FIREBASE_CLIENT_EMAIL,
+  private_key: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
 }
 
 const adminApp =
   getApps().length === 0
-    ? initializeApp({ credential: cert(serviceAccount) })
+    ? (serviceAccount.project_id && serviceAccount.client_email && serviceAccount.private_key
+      ? initializeApp({ credential: cert(serviceAccount as any) })
+      : null)
     : getApps()[0]
 
-export const adminAuth = getAuth(adminApp)
-export const adminDb = getFirestore(adminApp)
+export const adminAuth = adminApp ? getAuth(adminApp) : null as any
+export const adminDb = adminApp ? getFirestore(adminApp) : null as any
 export default adminApp

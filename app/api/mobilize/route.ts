@@ -3,6 +3,8 @@ import adminApp from "@/lib/firebase/admin"
 import { getFirestore } from "firebase-admin/firestore"
 import { getMessaging } from "firebase-admin/messaging"
 
+export const dynamic = "force-dynamic"
+
 export async function POST(req: Request) {
   try {
     const { incidentId, volunteerIds, messageTemplate } = await req.json()
