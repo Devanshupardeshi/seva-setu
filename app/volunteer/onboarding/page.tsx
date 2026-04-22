@@ -46,11 +46,20 @@ export default function OnboardingPage() {
           return
         }
       }
-      // If no blob or API failed, we fallback to simulated data
-      console.log("Using fallback profile data...")
     } catch(e) {
       console.error(e)
     }
+
+    // Fallback to simulated data if API fails or no blob
+    console.log("Using fallback profile data...")
+    setProfileData({
+      name: "Priya Sharma",
+      skills: ["First Aid", "Hindi Translation", "Digital Literacy"],
+      languages: ["Hindi", "English"],
+      availability: ["Weekends", "Evenings"],
+      location: "Bandra, Mumbai",
+      experience: "Student / Community Volunteer"
+    })
   }
 
   return (

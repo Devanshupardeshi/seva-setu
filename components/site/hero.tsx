@@ -1,9 +1,24 @@
+"use client"
+
 import Link from "next/link"
-import { ArrowRight, Sparkles } from "lucide-react"
+import { ArrowRight, Sparkles, LayoutDashboard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { HeroMap } from "./hero-map"
+import { useEffect, useState } from "react"
 
 export function Hero() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [role, setRole] = useState<string | null>(null)
+
+  useEffect(() => {
+    const cookies = document.cookie.split('; ')
+    const hasSession = cookies.some(c => c.startsWith('session='))
+    const roleCookie = cookies.find(c => c.startsWith('role='))?.split('=')[1]
+    
+    setIsLoggedIn(hasSession)
+    setRole(roleCookie || null)
+  }, [])
+
   return (
     <section className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -31,20 +46,31 @@ export function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button asChild size="lg" className="h-12 px-6 text-base">
-              <Link href="/volunteer/onboarding">
-                I want to help
-                <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="h-12 px-6 text-base"
-            >
-              <Link href="/login">Volunteer Login</Link>
-            </Button>
+            {isLoggedIn ? (
+              <Button asChild size="lg" className="h-12 px-8 text-base shadow-lg shadow-primary/20">
+                <Link href={role === 'volunteer' ? '/volunteer' : '/ngo'}>
+                  <LayoutDashboard className="mr-2 h-5 w-5" />
+                  Go to {role === 'volunteer' ? 'Volunteer Dashboard' : 'NGO Console'}
+                </Link>
+              </Button>
+            ) : (
+              <>
+                <Button asChild size="lg" className="h-12 px-6 text-base">
+                  <Link href="/volunteer/onboarding">
+                    I want to help
+                    <ArrowRight className="ml-1 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="h-12 px-6 text-base"
+                >
+                  <Link href="/login">Volunteer Login</Link>
+                </Button>
+              </>
+            )}
           </div>
 
           <dl className="mt-12 grid max-w-xl grid-cols-3 gap-6 border-t border-border pt-8">

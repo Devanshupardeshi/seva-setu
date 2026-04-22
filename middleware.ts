@@ -3,16 +3,30 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const session = request.cookies.get('session')
+  const { pathname } = request.nextUrl
   
   // Protect specific routes
-  const protectedPaths = ['/volunteer', '/ngo', '/command-center', '/impact']
-  const isProtectedPath = protectedPaths.some(path => request.nextUrl.pathname.startsWith(path))
+  const protectedPaths = ['/volunteer', '/ngo', '/command-center']
+  
+  // Check if the current path is protected
+  const isProtectedPath = protectedPaths.some(path => pathname.startsWith(path))
+  
+  // EXEMPTIONS: Registration and onboarding must be public
+  const isPublicExemption = 
+    pathname.startsWith('/volunteer/onboarding') || 
+    pathname.startsWith('/ngo/register')
 
-  // For this demo hackathon phase, we're not enforcing absolute redirect blocks 
-  // until the auth system is fully populated, but this is the hook point.
-  // if (isProtectedPath && !session) {
-  //   return NextResponse.redirect(new URL('/login', request.url))
-  // }
+  if (isProtectedPath && !isPublicExemption) {
+    if (!session) {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
+
+    // Role-based access control
+    const role = request.cookies.get('role')?.value
+    if (role === 'volunteer' && pathname.startsWith('/command-center')) {
+      return NextResponse.redirect(new URL('/volunteer', request.url))
+    }
+  }
 
   return NextResponse.next()
 }

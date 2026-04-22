@@ -9,10 +9,12 @@ import {
   LayoutDashboard,
   ListTree,
   Plus,
+  LogOut,
 } from "lucide-react"
 import { Logo } from "@/components/site/logo"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 
 const tabs = [
   { href: "/ngo", label: "Dashboard", icon: LayoutDashboard },
@@ -32,6 +34,13 @@ export function NgoShell({
   coordinatorName: string
 }) {
   const pathname = usePathname()
+  const router = useRouter()
+
+  const handleLogout = () => {
+    document.cookie = "session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+    router.push("/")
+    router.refresh()
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -99,6 +108,9 @@ export function NgoShell({
                 .slice(0, 2)
                 .join("")}
             </div>
+            <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive transition-colors">
+              <LogOut className="h-4 w-4" />
+            </Button>
           </div>
         </div>
 

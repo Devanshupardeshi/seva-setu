@@ -2,11 +2,12 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Bell, Home, LayoutGrid, MapPin, User, Search } from "lucide-react"
+import { Bell, Home, LayoutGrid, MapPin, User, Search, LogOut } from "lucide-react"
 import { Logo } from "@/components/site/logo"
 import { cn } from "@/lib/utils"
 import { NotificationListener } from "@/components/volunteer/notification-listener"
 import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
 
 const tabs = [
   { href: "/volunteer", label: "Home", icon: Home },
@@ -24,6 +25,13 @@ export function VolunteerShell({
   userLocation: string
 }) {
   const pathname = usePathname()
+  const router = useRouter()
+
+  const handleLogout = () => {
+    document.cookie = "session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+    router.push("/")
+    router.refresh()
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-[#f7f6f0]">
@@ -85,6 +93,9 @@ export function VolunteerShell({
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
                 {userName[0]}
               </div>
+              <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive transition-colors">
+                <LogOut className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </div>
