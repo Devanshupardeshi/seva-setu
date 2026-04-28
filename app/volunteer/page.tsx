@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import Link from "next/link"
-import { Mic, Sparkles } from "lucide-react"
+import { HandHeart, Mic, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { VolunteerShell } from "@/components/app-shell/volunteer-shell"
 import { cn } from "@/lib/utils"
@@ -9,6 +9,7 @@ import { ProfileCard } from "@/components/volunteer/profile-card"
 import { ActiveMatch } from "@/components/volunteer/active-match"
 import { MatchCard } from "@/components/volunteer/match-card"
 import { ImpactSnapshot } from "@/components/volunteer/impact-snapshot"
+import { EmptyState } from "@/components/empty-state"
 import {
   currentVolunteer,
   matches as mockMatches,
@@ -21,20 +22,17 @@ import { where } from "firebase/firestore"
 import { useMemo } from "react"
 
 export default function VolunteerHome() {
-  // Real-time matches for this volunteer
-  const { data: liveMatches } = useCollection<Match>(
-    "matches", 
+  // Real-time matches for this volunteer.
+  // The hook returns the mock fixture only in Demo Mode; in Actual Mode it
+  // returns the live snapshot (empty arrays stay empty).
+  const { data: activeMatches, isActual } = useCollection<Match>(
+    "matches",
     [where("volunteerId", "==", currentVolunteer.id)],
-    mockMatches
+    mockMatches,
   )
 
-  // Real-time needs and NGOs
-  const { data: liveNeeds } = useCollection<Need>("needs", [], mockNeeds)
-  const { data: liveNgos } = useCollection<NGO>("ngos", [], mockNgos)
-
-  const activeMatches = liveMatches || mockMatches
-  const activeNeeds = liveNeeds || mockNeeds
-  const activeNgos = liveNgos || mockNgos
+  const { data: activeNeeds } = useCollection<Need>("needs", [], mockNeeds)
+  const { data: activeNgos } = useCollection<NGO>("ngos", [], mockNgos)
 
   // Calculate upcoming match
   const upcomingMatch = activeMatches.find((m) => m.status === "accepted")
@@ -117,13 +115,30 @@ export default function VolunteerHome() {
               <p className="mt-1 text-sm text-muted-foreground">
                 Ranked by skill fit, distance, and availability. Re-calculated in real-time as NGOs post needs.
               </p>
-              <div className="mt-5 grid gap-4 md:grid-cols-2">
-                {feed.map((need) => {
-                  const ngo = activeNgos.find(n => n.id === need.ngoId)
-                  if (!ngo) return null
-                  return <MatchCard key={need.id} need={need} ngo={ngo} />
-                })}
-              </div>
+              {feed.length === 0 ? (
+                <EmptyState
+                  className="mt-5"
+                  icon={HandHeart}
+                  title={
+                    isActual
+                      ? "No active opportunities yet"
+                      : "All caught up"
+                  }
+                  description={
+                    isActual
+                      ? "NGOs haven't posted needs that match your profile. We'll notify you the moment a match shows up."
+                      : "There are no open needs right now. Check back later."
+                  }
+                />
+              ) : (
+                <div className="mt-5 grid gap-4 md:grid-cols-2">
+                  {feed.map((need) => {
+                    const ngo = activeNgos.find((n) => n.id === need.ngoId)
+                    if (!ngo) return null
+                    return <MatchCard key={need.id} need={need} ngo={ngo} />
+                  })}
+                </div>
+              )}
             </div>
           </div>
 

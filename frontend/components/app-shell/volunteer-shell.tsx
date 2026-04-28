@@ -28,8 +28,10 @@ export function VolunteerShell({
   const pathname = usePathname()
   const router = useRouter()
 
-  const handleLogout = () => {
-    document.cookie = "session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+  const handleLogout = async () => {
+    // Clear the httpOnly session cookie + Firebase Auth state via the server.
+    const { signOut } = await import("@/frontend/lib/auth/client")
+    await signOut()
     router.push("/")
     router.refresh()
   }

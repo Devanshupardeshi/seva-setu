@@ -13,29 +13,41 @@ import { getDb } from "@/lib/firebase/client"
 import { useMode } from "@/frontend/lib/mode/mode-context"
 
 /**
- * Subscribe to a Firestore collection. In Demo Mode, or when Firebase is not
- * configured, the hook simply returns the provided initialData and stays idle.
+ * Subscribe to a Firestore collection.
+ *
+ * Behaviour by mode:
+ *   - Demo Mode    → returns `initialData` (your mock fixture). Never touches Firestore.
+ *   - Actual Mode  → returns the live snapshot. Starts empty (`[]`) and is replaced
+ *                    by the live result once the snapshot fires. **Never** falls back
+ *                    to `initialData`, so an empty collection stays empty.
+ *
+ * `loading` is true while the first Actual-mode snapshot is in-flight.
  */
 export function useCollection<T = DocumentData>(
   collectionName: string,
   constraints: QueryConstraint[] = [],
   initialData: T[] = [],
 ) {
-  const { mode } = useMode()
-  const [data, setData] = useState<T[]>(initialData)
+  const { mode, hydrated } = useMode()
+  const isActual = hydrated && mode === "actual"
+
+  const [data, setData] = useState<T[]>(isActual ? [] : initialData)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
   // Stable key for re-running effect when constraints semantically change.
   const constraintKey = useMemo(() => {
     try {
-      return JSON.stringify(constraints.map((c) => (c as unknown as { _op?: string })._op ?? ""))
+      return JSON.stringify(
+        constraints.map((c) => (c as unknown as { _op?: string })._op ?? ""),
+      )
     } catch {
       return String(constraints.length)
     }
   }, [constraints])
 
   useEffect(() => {
+    // Demo mode (or pre-hydration) → mock fixture, no Firestore I/O.
     if (mode !== "actual") {
       setData(initialData)
       setLoading(false)
@@ -43,9 +55,16 @@ export function useCollection<T = DocumentData>(
       return
     }
 
+    // Actual mode: start empty, then let the snapshot fill it in.
+    setData([])
+
     const db = getDb()
     if (!db) {
-      setError(new Error("Firestore is not configured"))
+      setError(
+        new Error(
+          "Firestore is not configured. Add NEXT_PUBLIC_FIREBASE_* env vars to enable live data.",
+        ),
+      )
       setLoading(false)
       return
     }
@@ -72,21 +91,31 @@ export function useCollection<T = DocumentData>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collectionName, constraintKey, mode])
 
-  return { data, loading, error }
+  return { data, loading, error, isActual }
 }
 
+/**
+ * Subscribe to a single Firestore document.
+ *
+ * Same mode contract as `useCollection`: demo returns `initialData`, actual
+ * starts as `null` until the snapshot resolves. Never falls back to the mock
+ * once we are in actual mode.
+ */
 export function useDocument<T = DocumentData>(
   collectionName: string,
   docId: string,
   initialData: T | null = null,
 ) {
-  const { mode } = useMode()
-  const [data, setData] = useState<T | null>(initialData)
+  const { mode, hydrated } = useMode()
+  const isActual = hydrated && mode === "actual"
+
+  const [data, setData] = useState<T | null>(isActual ? null : initialData)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     if (!docId) return
+
     if (mode !== "actual") {
       setData(initialData)
       setLoading(false)
@@ -94,9 +123,16 @@ export function useDocument<T = DocumentData>(
       return
     }
 
+    // Actual mode: start blank, fill from snapshot.
+    setData(null)
+
     const db = getDb()
     if (!db) {
-      setError(new Error("Firestore is not configured"))
+      setError(
+        new Error(
+          "Firestore is not configured. Add NEXT_PUBLIC_FIREBASE_* env vars to enable live data.",
+        ),
+      )
       setLoading(false)
       return
     }
@@ -120,5 +156,5 @@ export function useDocument<T = DocumentData>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collectionName, docId, mode])
 
-  return { data, loading, error }
+  return { data, loading, error, isActual }
 }

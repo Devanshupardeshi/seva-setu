@@ -37,8 +37,9 @@ export function NgoShell({
   const pathname = usePathname()
   const router = useRouter()
 
-  const handleLogout = () => {
-    document.cookie = "session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+  const handleLogout = async () => {
+    const { signOut } = await import("@/frontend/lib/auth/client")
+    await signOut()
     router.push("/")
     router.refresh()
   }

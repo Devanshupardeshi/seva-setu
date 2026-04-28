@@ -22,6 +22,8 @@ import {
   sectors,
 } from "@/lib/mock-incident-data"
 import { useDocument } from "@/hooks/use-firestore"
+import { EmptyState } from "@/components/empty-state"
+import { ShieldAlert } from "lucide-react"
 import { Incident } from "@/lib/types"
 
 function formatActivatedAgo(iso: string) {
@@ -34,10 +36,48 @@ function formatActivatedAgo(iso: string) {
 }
 
 export default function CommandCenterPage() {
-  // Subscribe to real-time incident data
-  const { data: liveIncident } = useDocument<Incident>("incidents", "inc_dhemaji", mockIncident)
-  
-  const inc = liveIncident || mockIncident
+  // Subscribe to real-time incident data. In Actual Mode the hook returns
+  // the live snapshot — null if no incident with this id exists.
+  const { data: inc, isActual } = useDocument<Incident>(
+    "incidents",
+    "inc_dhemaji",
+    mockIncident,
+  )
+
+  // No active incident in Actual Mode → empty state, not mock.
+  if (!inc) {
+    return (
+      <CommandShell
+        operatorName={incidentOperator.name}
+        operatorRole={incidentOperator.role}
+        office={incidentOperator.office}
+        incidentTitle="No active incident"
+        severity="low"
+        activeSince="—"
+      >
+        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6">
+          <EmptyState
+            icon={ShieldAlert}
+            title={isActual ? "No active incident" : "Standby"}
+            description={
+              isActual
+                ? "There are no active incidents in Firestore. When an incident is activated, the live SITREP will appear here in real-time."
+                : "Demo incident data is currently unavailable."
+            }
+            action={
+              <Button asChild size="sm">
+                <Link href="/command-center/new">
+                  <FlaskConical className="mr-1 h-4 w-4" />
+                  Run a drill
+                </Link>
+              </Button>
+            }
+          />
+        </div>
+      </CommandShell>
+    )
+  }
+
   const sectorsSecured = sectors.filter((s) => s.status === "secured").length
   const totalSkillsNeeded = inc.skillsNeeded.reduce((a, s) => a + s.needed, 0)
   const totalSkillsFilled = inc.skillsNeeded.reduce((a, s) => a + s.filled, 0)
