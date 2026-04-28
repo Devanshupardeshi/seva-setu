@@ -41,8 +41,8 @@ export function Hero() {
 
           <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground md:text-xl">
             SevaSetu is an AI-powered bridge between India&apos;s 33 lakh NGOs
-            and the millions who want to help. Voice-onboarded in any language.
-            Matched in seconds. Mobilized in minutes during a crisis.
+            and the millions who want to help. Semantic skill matching in
+            seconds. Coordinated response in minutes during a crisis.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -76,24 +76,24 @@ export function Hero() {
           <dl className="mt-12 grid max-w-xl grid-cols-3 gap-6 border-t border-border pt-8">
             <div>
               <dt className="text-xs uppercase tracking-wide text-muted-foreground">
-                Languages
-              </dt>
-              <dd className="mt-1 font-serif text-3xl text-foreground">5+</dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-wide text-muted-foreground">
-                Match time
+                Match latency
               </dt>
               <dd className="mt-1 font-serif text-3xl text-foreground">
-                &lt;5m
+                &lt;1s
               </dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-wide text-muted-foreground">
-                Mobilize 50
+                Live roles
+              </dt>
+              <dd className="mt-1 font-serif text-3xl text-foreground">4</dd>
+            </div>
+            <div>
+              <dt className="text-xs uppercase tracking-wide text-muted-foreground">
+                Demo mode
               </dt>
               <dd className="mt-1 font-serif text-3xl text-foreground">
-                &lt;10m
+                On
               </dd>
             </div>
           </dl>

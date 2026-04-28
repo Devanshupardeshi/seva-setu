@@ -2,32 +2,60 @@ const tiers = [
   {
     tier: "AI",
     items: [
-      { name: "Gemini 2.5 Pro", use: "Voice → structured profile, briefing generation" },
-      { name: "Vertex AI Vector Search", use: "Sub-second semantic skill matching" },
-      { name: "Vertex AI Embeddings", use: "text-embedding-004 for volunteers & needs" },
-      { name: "Speech-to-Text", use: "Fallback for regional dialects" },
+      {
+        name: "Gemini 2.5 Pro",
+        use: "Need parsing, briefing generation, CSR report drafting",
+      },
+      {
+        name: "Vertex AI Vector Search",
+        use: "Sub-second semantic skill matching",
+      },
+      {
+        name: "Vertex AI Embeddings",
+        use: "text-embedding-004 for volunteers & needs",
+      },
     ],
   },
   {
-    tier: "Backend",
+    tier: "Backend & Data",
     items: [
-      { name: "Cloud Run", use: "Stateless API services, autoscale to zero" },
-      { name: "Cloud Functions", use: "Firestore & Storage triggers" },
-      { name: "Pub/Sub", use: "Match, notify, analytics event bus" },
-      { name: "Firestore", use: "Operational DB with real-time sync" },
-      { name: "BigQuery", use: "Analytics warehouse + impact reports" },
-      { name: "Cloud Storage", use: "Audio intros, generated PDFs" },
+      {
+        name: "Firebase Firestore",
+        use: "Operational database with real-time sync",
+      },
+      {
+        name: "Firebase Authentication",
+        use: "Email/password today, Phone OTP planned",
+      },
+      {
+        name: "Firebase Cloud Messaging",
+        use: "Web push notifications to volunteers",
+      },
+      {
+        name: "Next.js Route Handlers",
+        use: "Server-rendered APIs on Vercel Edge",
+      },
     ],
   },
   {
-    tier: "Frontend & APIs",
+    tier: "Frontend",
     items: [
-      { name: "Flutter", use: "Volunteer mobile app" },
-      { name: "Next.js + shadcn/ui", use: "NGO & Command Center dashboards" },
-      { name: "Firebase Auth", use: "Phone OTP sign-in" },
-      { name: "Firebase Cloud Messaging", use: "Push notifications" },
-      { name: "Google Maps Platform", use: "Routes, geofencing, heatmap" },
-      { name: "Looker Studio", use: "Public impact dashboard" },
+      {
+        name: "Next.js 16 + React 19",
+        use: "App Router, server components, streaming",
+      },
+      {
+        name: "shadcn/ui + Tailwind v4",
+        use: "Accessible component system",
+      },
+      {
+        name: "Google Maps Platform",
+        use: "Live geofences, routes, command-center map",
+      },
+      {
+        name: "html5-qrcode",
+        use: "QR check-in / check-out at site",
+      },
     ],
   },
 ]
@@ -38,16 +66,17 @@ export function TechStack() {
       <div className="mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-28">
         <div className="max-w-3xl">
           <p className="font-mono text-xs uppercase tracking-widest text-accent">
-            Built on Google Cloud
+            What is actually shipping
           </p>
           <h2 className="mt-3 text-balance font-serif text-4xl leading-tight tracking-tight text-foreground md:text-5xl">
-            End-to-end Google stack.
-            <span className="italic text-primary"> No glue code shortcuts.</span>
+            A focused stack.
+            <span className="italic text-primary"> No vapor.</span>
           </h2>
           <p className="mt-5 text-pretty text-lg leading-relaxed text-muted-foreground">
-            Technical Merit is 40% of the judging score. Every layer of
-            SevaSetu is deliberately chosen from Google Cloud — not to tick
-            boxes, but because each service is the best tool for the job.
+            Every service listed below is wired, deployed, and exercised by the
+            live demo. Nothing on this page is aspirational. Future additions
+            (Phone OTP, WhatsApp alerts, offline PWA) are tracked in our public
+            roadmap, not advertised here.
           </p>
         </div>
 

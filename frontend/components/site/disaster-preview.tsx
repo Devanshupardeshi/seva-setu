@@ -6,7 +6,7 @@ import { PreviewMap } from "@/components/site/preview-map"
 const timelineEvents = [
   { t: "00:00", label: "Incident created", sub: "District Collector · Dhemaji" },
   { t: "00:04", label: "12,480 volunteers queried", sub: "Vector Search · skill-ranked" },
-  { t: "00:12", label: "Bulk notifications fanned out", sub: "FCM · SMS · WhatsApp" },
+  { t: "00:12", label: "Push notifications fanned out", sub: "Firebase Cloud Messaging" },
   { t: "00:28", label: "First 50 accepted", sub: "Skill gap: boat operators −8" },
   { t: "00:47", label: "342 mobilized", sub: "12 doctors en route" },
 ]

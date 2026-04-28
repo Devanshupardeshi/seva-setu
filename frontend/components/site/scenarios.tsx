@@ -13,14 +13,14 @@ const scenarios = [
     tag: "Volunteer",
     title: "Priya wants to volunteer on weekends.",
     body: "She fills out five NGO forms. Hears back from none. The one task she finally gets is folding pamphlets — nothing to do with her Python skills. She quits within two months.",
-    outcome: "With SevaSetu: a 30-second voice intro lands her a coding-for-kids gig by Saturday.",
+    outcome: "With SevaSetu: a one-minute profile lands her a coding-for-kids gig by Saturday.",
   },
   {
     icon: Building2,
     tag: "NGO",
     title: "Shiksha Kendra runs on two people.",
     body: "They need a Hindi-speaking math tutor, a one-time graphic designer, and a monthly doctor. They post on Facebook. A hundred DMs arrive. They spend ten hours filtering, then give up.",
-    outcome: "With SevaSetu: describe the need in plain Hindi. Pre-ranked, pre-verified applicants.",
+    outcome: "With SevaSetu: describe the need in plain English. Pre-ranked applicants in seconds.",
   },
 ]
 

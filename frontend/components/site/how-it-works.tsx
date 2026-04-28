@@ -1,17 +1,17 @@
-import { Mic, FileText, Sparkles, MapPin } from "lucide-react"
+import { UserPlus, FileText, Sparkles, MapPin } from "lucide-react"
 
 const steps = [
   {
     n: "01",
-    icon: Mic,
-    title: "Volunteer speaks in any Indian language",
-    body: "A 30-second voice note. Gemini 2.5 extracts skills, languages, availability, and location — no forms, no friction.",
+    icon: UserPlus,
+    title: "Volunteer creates a lightweight profile",
+    body: "Skills, languages, availability windows, and location captured in a minute. Gemini turns the free-text bio into a clean structured embedding.",
   },
   {
     n: "02",
     icon: FileText,
     title: "NGO describes a need in plain words",
-    body: "\"Need a Hindi-speaking computer teacher this Saturday, Bandra.\" Our model turns text into structured, matchable needs.",
+    body: "\"Need an Assamese-speaking coordinator this Saturday in Majuli.\" Gemini turns the sentence into a structured, matchable need.",
   },
   {
     n: "03",
@@ -22,8 +22,8 @@ const steps = [
   {
     n: "04",
     icon: MapPin,
-    title: "Briefed, routed, mobilized",
-    body: "Gemini auto-writes a personalized prep kit. Google Maps delivers the route. In disasters, 500 volunteers move at once.",
+    title: "Briefed, routed, notified",
+    body: "Gemini drafts a personalized briefing. Google Maps delivers the route. FCM web push wakes the volunteer when a match lands.",
   },
 ]
 

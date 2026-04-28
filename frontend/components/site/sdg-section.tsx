@@ -32,9 +32,10 @@ export function SdgSection() {
             <span className="italic text-primary"> Measurable impact.</span>
           </h2>
           <p className="mt-5 text-pretty text-lg leading-relaxed text-muted-foreground">
-            Every match, every mobilization, every hour served feeds a
-            BigQuery-backed impact ledger — the same ledger that produces the
-            reports NGOs share with funders and governments share with citizens.
+            Every match, every mobilization, every hour served writes to a
+            real-time impact ledger in Firestore — the same ledger that powers
+            the reports NGOs share with funders and governments share with
+            citizens.
           </p>
         </div>
 
