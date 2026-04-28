@@ -24,30 +24,40 @@ import {
   recentCompleted,
 } from "@/lib/mock-ngo-data"
 import { useCollection } from "@/hooks/use-firestore"
+import { EmptyState } from "@/components/empty-state"
 import { Need } from "@/lib/types"
 import { where } from "firebase/firestore"
 import { useMemo } from "react"
 
 export default function NgoDashboardPage() {
-  // Real-time needs for this NGO
-  const { data: liveNeeds } = useCollection<Need>(
-    "needs", 
+  // Real-time needs for this NGO. In Actual Mode the hook returns the live
+  // snapshot (no fallback to mock data when empty).
+  const { data: activeNeeds, isActual } = useCollection<Need>(
+    "needs",
     [where("ngoId", "==", currentNgo.id)],
-    mockNeeds
+    mockNeeds,
   )
 
-  const activeNeeds = liveNeeds || mockNeeds
   const urgent = activeNeeds.filter((n) => n.urgency !== "routine")
   const routine = activeNeeds.filter((n) => n.urgency === "routine")
 
-  // Reactively calculate some stats
+  // Reactively calculate some stats. In Actual Mode we don't have aggregations
+  // wired up yet, so show zeroes instead of the demo fixture numbers.
   const stats = useMemo(() => {
+    if (isActual) {
+      return {
+        openNeeds: activeNeeds.length,
+        applicantsWaiting: 0,
+        hoursThisMonth: 0,
+        childrenReachedThisMonth: 0,
+        avgTimeToFill: "—",
+      }
+    }
     return {
       ...mockStats,
       openNeeds: activeNeeds.length,
-      // We could also calculate applicants from a live matches collection here
     }
-  }, [activeNeeds])
+  }, [activeNeeds, isActual])
 
   return (
     <NgoShell
@@ -137,15 +147,35 @@ export default function NgoDashboardPage() {
               See all
             </Link>
           </div>
-          <div className="grid gap-3">
-            {routine.map((need) => (
-              <NeedRow
-                key={need.id}
-                need={need}
-                applicants={applicantsByNeedId[need.id]?.length ?? 0}
-              />
-            ))}
-          </div>
+          {routine.length === 0 ? (
+            <EmptyState
+              icon={FileText}
+              title={isActual ? "No active needs yet" : "Quiet week"}
+              description={
+                isActual
+                  ? "Click 'Post a need' to publish your first opportunity. Volunteers will be matched in real-time."
+                  : "No routine needs are open right now."
+              }
+              action={
+                <Button asChild size="sm">
+                  <Link href="/ngo/post">
+                    <Plus className="mr-1 h-4 w-4" />
+                    Post a need
+                  </Link>
+                </Button>
+              }
+            />
+          ) : (
+            <div className="grid gap-3">
+              {routine.map((need) => (
+                <NeedRow
+                  key={need.id}
+                  need={need}
+                  applicants={applicantsByNeedId[need.id]?.length ?? 0}
+                />
+              ))}
+            </div>
+          )}
         </section>
 
         <section className="mt-16">
