@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { FCMSubscriber } from "@/components/fcm-subscriber"
 import { Toaster } from "sonner"
+import { ModeProvider } from "@/frontend/lib/mode/mode-context"
 
 const geist = Geist({
   subsets: ["latin"],
@@ -72,10 +73,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="font-sans antialiased" suppressHydrationWarning>
-        <FCMSubscriber />
-        {children}
-        <Toaster closeButton position="top-right" richColors />
-        {process.env.NODE_ENV === "production" && <Analytics />}
+        <ModeProvider>
+          <FCMSubscriber />
+          {children}
+          <Toaster closeButton position="top-right" richColors />
+          {process.env.NODE_ENV === "production" && <Analytics />}
+        </ModeProvider>
       </body>
     </html>
   )

@@ -23,6 +23,24 @@
       }
     ],
     "paths": {
+      "@/components/*": [
+        "./frontend/components/*"
+      ],
+      "@/hooks/*": [
+        "./frontend/hooks/*"
+      ],
+      "@/lib/*": [
+        "./frontend/lib/*"
+      ],
+      "@/styles/*": [
+        "./frontend/styles/*"
+      ],
+      "@/frontend/*": [
+        "./frontend/*"
+      ],
+      "@/backend/*": [
+        "./backend/*"
+      ],
       "@/*": [
         "./*"
       ]

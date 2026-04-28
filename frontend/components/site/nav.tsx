@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { Logo } from "./logo"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import { ModeToggle } from "@/components/mode-toggle"
 
 const links = [
   { href: "/volunteer", label: "For volunteers" },
@@ -68,6 +69,7 @@ export function SiteNav() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <ModeToggle />
           {isLoggedIn ? (
             <div className="flex items-center gap-3">
               <Button asChild variant="outline" size="sm" className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10">

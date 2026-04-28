@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { NotificationListener } from "@/components/volunteer/notification-listener"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
+import { ModeToggle } from "@/components/mode-toggle"
 
 const tabs = [
   { href: "/volunteer", label: "Home", icon: Home },
@@ -75,6 +76,7 @@ export function VolunteerShell({
           </nav>
 
           <div className="flex items-center gap-4">
+            <ModeToggle />
             <Button variant="ghost" size="icon" asChild className="relative rounded-full text-muted-foreground hover:text-foreground">
               <Link href="/volunteer/notifications">
                 <Bell className="h-5 w-5" />
@@ -108,7 +110,8 @@ export function VolunteerShell({
           <span className="font-serif text-lg tracking-tight">SevaSetu</span>
         </div>
         <div className="flex items-center gap-2">
-           <Button variant="ghost" size="icon" asChild className="relative rounded-full">
+          <ModeToggle compact />
+          <Button variant="ghost" size="icon" asChild className="relative rounded-full">
             <Link href="/volunteer/notifications">
               <Bell className="h-5 w-5" />
               <span className="absolute right-2.5 top-2.5 h-1.5 w-1.5 rounded-full bg-destructive" />

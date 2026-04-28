@@ -13,6 +13,7 @@ import {
 import { Logo } from "@/components/site/logo"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { ModeToggle } from "@/components/mode-toggle"
 
 const tabs = [
   { href: "/command-center", label: "Live incident", icon: Radio },
@@ -109,6 +110,8 @@ export function CommandShell({
           </div>
 
           <div className="flex items-center gap-3">
+            <ModeToggle className="hidden sm:inline-flex" />
+            <ModeToggle compact className="sm:hidden" />
             <Button asChild size="sm" variant="destructive" className="hidden md:inline-flex">
               <Link href="/command-center/new">
                 <Plus className="mr-1 h-4 w-4" />
