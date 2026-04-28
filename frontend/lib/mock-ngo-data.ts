@@ -1,19 +1,19 @@
 import type { Volunteer } from "./types"
 import { currentVolunteer, ngos, needs } from "./mock-data"
 
-// ----- The currently logged-in NGO coordinator -----
-export const currentNgo = ngos[0] // Shiksha Kendra
+// ----- The currently logged-in NGO coordinator --------------------------
+export const currentNgo = ngos[0] // Brahmaputra Education Trust
 
 export const currentCoordinator = {
   id: "c_meena",
-  name: "Meena Kulkarni",
+  name: "Manashi Hazarika",
   role: "Programme Coordinator",
-  phone: "+91 98XXX 00912",
+  phone: "+91 376-XXX-00912",
   ngoId: currentNgo.id,
 }
 
-// ----- Applicants for the open HTML-teaching need -----
-// These are ranked by the matching engine (semantic fit + distance + trust).
+// ----- Applicants for the open digital-literacy need --------------------
+// Ranked by the matching engine (semantic fit + distance + trust).
 
 export type Applicant = {
   volunteer: Pick<
@@ -55,20 +55,20 @@ export const applicantsByNeedId: Record<string, Applicant[]> = {
         experience: currentVolunteer.experience,
       },
       matchScore: 96,
-      distanceKm: 6.4,
+      distanceKm: 4.6,
       availability: "confirmed",
       whyMatched:
-        "Taught two prior web-design workshops, speaks Hindi + English, and lives 6.4 km away. Strong reliability history.",
+        "Has run two prior teaching gigs, speaks Assamese + Hindi + English, and lives 4.6 km away on Zoo Road. Strong reliability history.",
       status: "shortlisted",
       appliedAt: "2026-04-20T09:14:00+05:30",
     },
     {
       volunteer: {
         id: "v_arjun",
-        name: "Arjun Deshpande",
-        location: { lat: 19.0822, lng: 72.8416, label: "Kurla, Mumbai" },
+        name: "Bhaskar Saikia",
+        location: { lat: 26.1809, lng: 91.7531, label: "Beltola, Guwahati" },
         skills: ["Teaching", "JavaScript", "Robotics"],
-        languages: ["Marathi", "Hindi", "English"],
+        languages: ["Assamese", "Hindi", "English"],
         trustScore: 4.6,
         hoursGiven: 62,
         peopleHelped: 90,
@@ -76,20 +76,20 @@ export const applicantsByNeedId: Record<string, Applicant[]> = {
         experience: "professional",
       },
       matchScore: 91,
-      distanceKm: 8.9,
+      distanceKm: 7.2,
       availability: "confirmed",
       whyMatched:
-        "Senior engineer at a BFSI firm, runs a school robotics club on weekends. Strong Marathi rapport with your cohort.",
+        "Senior engineer at an IT firm in Guwahati, runs a school robotics club on weekends. Will build strong Assamese rapport with the cohort.",
       status: "new",
       appliedAt: "2026-04-20T11:02:00+05:30",
     },
     {
       volunteer: {
         id: "v_sara",
-        name: "Sara Khan",
-        location: { lat: 19.0544, lng: 72.8322, label: "Khar West, Mumbai" },
+        name: "Sahnaz Khanam",
+        location: { lat: 26.1090, lng: 91.7263, label: "Fancy Bazaar, Guwahati" },
         skills: ["UI design", "Illustration", "Teaching"],
-        languages: ["Hindi", "English", "Urdu"],
+        languages: ["Assamese", "Hindi", "Bengali", "English"],
         trustScore: 4.4,
         hoursGiven: 24,
         peopleHelped: 31,
@@ -97,20 +97,20 @@ export const applicantsByNeedId: Record<string, Applicant[]> = {
         experience: "early-career",
       },
       matchScore: 84,
-      distanceKm: 1.1,
+      distanceKm: 1.4,
       availability: "confirmed",
       whyMatched:
-        "Walks from Khar West (1.1 km). Illustration background means kids will enjoy the visuals.",
+        "Walks from Fancy Bazaar (1.4 km). Illustration background means kids will enjoy the visuals.",
       status: "new",
       appliedAt: "2026-04-20T12:47:00+05:30",
     },
     {
       volunteer: {
         id: "v_rohan",
-        name: "Rohan Iyer",
-        location: { lat: 19.1197, lng: 72.8468, label: "Andheri West, Mumbai" },
+        name: "Rohan Bordoloi",
+        location: { lat: 26.1445, lng: 91.7362, label: "Zoo Road, Guwahati" },
         skills: ["Python", "Data science", "Mentoring"],
-        languages: ["Hindi", "English", "Tamil"],
+        languages: ["Assamese", "Hindi", "English", "Bengali"],
         trustScore: 4.3,
         hoursGiven: 18,
         peopleHelped: 22,
@@ -118,20 +118,20 @@ export const applicantsByNeedId: Record<string, Applicant[]> = {
         experience: "student",
       },
       matchScore: 78,
-      distanceKm: 6.4,
+      distanceKm: 4.6,
       availability: "tentative",
       whyMatched:
-        "First-time HTML teacher, but has mentored 3 cohorts of Python beginners. Might need a co-teacher.",
+        "First-time HTML teacher, but has mentored 3 cohorts of Python beginners at IIT Guwahati. Might need a co-teacher.",
       status: "new",
       appliedAt: "2026-04-20T14:10:00+05:30",
     },
     {
       volunteer: {
         id: "v_neha",
-        name: "Neha Pillai",
-        location: { lat: 19.0296, lng: 72.8526, label: "Mahim, Mumbai" },
+        name: "Nilakshi Pathak",
+        location: { lat: 26.1825, lng: 91.7368, label: "Six Mile, Guwahati" },
         skills: ["Teaching", "Content writing"],
-        languages: ["English", "Malayalam"],
+        languages: ["Assamese", "English"],
         trustScore: 4.7,
         hoursGiven: 54,
         peopleHelped: 70,
@@ -139,20 +139,20 @@ export const applicantsByNeedId: Record<string, Applicant[]> = {
         experience: "professional",
       },
       matchScore: 72,
-      distanceKm: 3.7,
+      distanceKm: 5.3,
       availability: "tentative",
       whyMatched:
-        "Seasoned teacher with strong reliability, but limited web-design background — better for an English module.",
+        "Seasoned teacher with strong reliability, but limited digital-design background — better for an English module.",
       status: "new",
       appliedAt: "2026-04-20T15:31:00+05:30",
     },
     {
       volunteer: {
         id: "v_karan",
-        name: "Karan Mehta",
-        location: { lat: 19.2183, lng: 72.9781, label: "Thane West" },
+        name: "Karan Mech",
+        location: { lat: 26.7509, lng: 94.2037, label: "Jorhat" },
         skills: ["HTML", "CSS", "Photography"],
-        languages: ["Hindi", "English"],
+        languages: ["Assamese", "Hindi", "English"],
         trustScore: 3.9,
         hoursGiven: 6,
         peopleHelped: 8,
@@ -160,17 +160,17 @@ export const applicantsByNeedId: Record<string, Applicant[]> = {
         experience: "student",
       },
       matchScore: 61,
-      distanceKm: 24.0,
+      distanceKm: 308.0,
       availability: "tentative",
       whyMatched:
-        "Strong on tech skills but 24 km away and has had one prior no-show — consider as a backup only.",
+        "Strong on tech skills but 308 km away in Jorhat and has had one prior no-show — consider as a remote co-teacher only.",
       status: "new",
       appliedAt: "2026-04-20T17:05:00+05:30",
     },
   ],
 }
 
-// ----- Needs owned by the current NGO -----
+// ----- Needs owned by the current NGO ----------------------------------
 export const myNeeds = needs.filter((n) => n.ngoId === currentNgo.id)
 
 // Add a couple of additional NGO-owned needs for the dashboard to feel real.
@@ -179,11 +179,11 @@ export const extendedMyNeeds = [
   {
     id: "need_math",
     ngoId: currentNgo.id,
-    title: "Saturday math circle · Class 6 level",
+    title: "Saturday math circle · Class 6 level (char school)",
     description:
-      "Ongoing 4-week math circle. Covers fractions, ratios and basic algebra with games. Looking for one lead and one co-teacher.",
+      "Ongoing 4-week math circle for kids from Guwahati's char settlements. Covers fractions, ratios and basic algebra with games. Looking for one lead and one co-teacher.",
     skillsRequired: ["Teaching", "Math"],
-    languagesPreferred: ["Hindi", "English"],
+    languagesPreferred: ["Assamese", "Hindi", "English"],
     startTime: "2026-05-02T10:00:00+05:30",
     durationHours: 2,
     location: currentNgo.location,
@@ -196,9 +196,9 @@ export const extendedMyNeeds = [
   {
     id: "need_poster_shk",
     ngoId: currentNgo.id,
-    title: "Annual day: design 3 Instagram posts",
+    title: "Bohag Bihu: design 3 Instagram posts",
     description:
-      "One-time design brief for annual day social media. Turnaround: 4 days. Brand guidelines provided on acceptance.",
+      "One-time design brief for Bohag Bihu social media. Turnaround: 4 days. Brand guidelines (Assamese typography pack) provided on acceptance.",
     skillsRequired: ["Graphic design"],
     startTime: "2026-04-30T10:00:00+05:30",
     durationHours: 4,
@@ -211,7 +211,7 @@ export const extendedMyNeeds = [
   },
 ]
 
-// ----- Dashboard stats for Shiksha Kendra -----
+// ----- Dashboard stats for Brahmaputra Education Trust -----------------
 export const ngoStats = {
   openNeeds: extendedMyNeeds.length,
   applicantsWaiting: 11,
@@ -221,35 +221,35 @@ export const ngoStats = {
   avgTimeToFill: "14 min",
 }
 
-// ----- Recent completed activity for the dashboard -----
+// ----- Recent completed activity for the dashboard --------------------
 export const recentCompleted = [
   {
     id: "rc_1",
     title: "Saturday math circle (Week 3)",
-    volunteer: "Tanvi Shenoy",
+    volunteer: "Tanvi Senapati",
     date: "2026-04-12",
     rating: 5,
-    note: "Brought handmade flashcards. Kids asked to keep them.",
+    note: "Brought handmade flashcards in Assamese. Kids asked to keep them.",
   },
   {
     id: "rc_2",
     title: "English reading corner",
-    volunteer: "Arjun Deshpande",
+    volunteer: "Bhaskar Saikia",
     date: "2026-04-06",
     rating: 5,
     note: "Quiet but very patient. Will invite again.",
   },
   {
     id: "rc_3",
-    title: "Annual-day poster design",
-    volunteer: "Sara Khan",
+    title: "Bihu poster design",
+    volunteer: "Sahnaz Khanam",
     date: "2026-03-30",
     rating: 4,
     note: "Beautiful layouts, turnaround slightly delayed.",
   },
 ]
 
-// ----- CSR / Impact rollup for the reports page -----
+// ----- CSR / Impact rollup for the reports page ----------------------
 export const impactRollup = {
   periodLabel: "Jan 2026 – Apr 2026",
   totalVolunteers: 128,
@@ -270,9 +270,9 @@ export const impactRollup = {
   ],
   topSkills: [
     { skill: "Teaching", hours: 308 },
-    { skill: "Web design", hours: 76 },
+    { skill: "Digital literacy", hours: 76 },
     { skill: "Math tutoring", hours: 94 },
-    { skill: "English reading", hours: 82 },
+    { skill: "Assamese reading", hours: 82 },
     { skill: "Graphic design", hours: 54 },
   ],
 }
