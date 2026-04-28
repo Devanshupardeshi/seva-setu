@@ -16,8 +16,11 @@
 
 export type AppMode = "demo" | "actual"
 
-const MODE_HEADER = "x-app-mode"
-const MODE_COOKIE = "app-mode"
+/** Alias used by backend handlers. */
+export type Mode = AppMode
+
+export const MODE_HEADER = "x-app-mode"
+export const MODE_COOKIE = "app-mode"
 
 /**
  * Read the current mode from a Next.js Request.
@@ -36,6 +39,9 @@ export function getRequestMode(request: Request): AppMode {
   // 3. Default
   return "demo"
 }
+
+/** Alias used by route handlers. */
+export const resolveMode = getRequestMode
 
 /** Convenience helpers */
 export function isDemoMode(request: Request): boolean {

@@ -4,6 +4,7 @@ import { useState } from "react"
 import { MessageSquare, Phone, Send, Smartphone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { apiFetch } from "@/frontend/lib/mode/api-client"
 
 const channels = [
   { id: "push", label: "FCM push", icon: Smartphone, default: true },
@@ -100,7 +101,7 @@ export function MobilizationPanel({ incidentId }: { incidentId: string }) {
           onClick={async () => {
             setSent(true)
             try {
-              await fetch("/api/mobilize", {
+              await apiFetch("/api/mobilize", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

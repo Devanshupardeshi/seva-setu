@@ -1,6 +1,6 @@
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-import { currentVolunteer, ngos, needs, matches, activeIncident } from '../lib/mock-data';
+import { currentVolunteer, ngos, needs, matches, activeIncident } from '../frontend/lib/mock-data';
 import * as fs from 'fs';
 import * as path from 'path';
 

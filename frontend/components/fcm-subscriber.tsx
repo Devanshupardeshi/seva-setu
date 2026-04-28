@@ -1,35 +1,51 @@
 "use client"
 
 import { useEffect } from "react"
-import { getMessaging, getToken, onMessage } from "firebase/messaging"
-import app from "@/lib/firebase/client"
+import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging"
+import { getFirebaseApp } from "@/lib/firebase/client"
 import { toast } from "sonner"
+import { useMode } from "@/frontend/lib/mode/mode-context"
 
+/**
+ * Foreground FCM subscriber. Only initialises in Actual Mode and only when:
+ *   - We are running in a browser
+ *   - Firebase is configured (NEXT_PUBLIC_FIREBASE_* env vars present)
+ *   - The browser supports the FCM messaging APIs
+ */
 export function FCMSubscriber() {
-  useEffect(() => {
-    const initFCM = async () => {
-      // Return early if we don't have the required config (or if we are not in browser)
-      if (typeof window === "undefined" || !process.env.NEXT_PUBLIC_FIREBASE_API_KEY) return
+  const { mode } = useMode()
 
+  useEffect(() => {
+    if (mode !== "actual") return
+    if (typeof window === "undefined") return
+    if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) return
+
+    let unsub: (() => void) | undefined
+    let cancelled = false
+
+    const initFCM = async () => {
       try {
+        const supported = await isSupported().catch(() => false)
+        if (!supported || cancelled) return
+
+        const app = getFirebaseApp()
+        if (!app) return
+
         const messaging = getMessaging(app)
 
-        // Attempt to get token (this requires a valid VAPID key in a real prod env)
-        const token = await getToken(messaging, {
-          // vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY
-        }).catch((err) => {
-          console.warn("[FCM] VAPID push token not acquired (expected if no key configured):", err)
-          return null
-        })
-
-        if (token) {
-          console.log("[FCM] Push token registered:", token)
-          // In a real app, we would save this token to the volunteer's document in Firestore here.
+        const vapidKey = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY
+        if (vapidKey) {
+          const token = await getToken(messaging, { vapidKey }).catch((err) => {
+            console.warn("[FCM] push token not acquired:", err)
+            return null
+          })
+          if (token) {
+            // In a real app, persist this token against the user's profile.
+            console.log("[FCM] push token registered")
+          }
         }
 
-        // Subscribe to foreground messages
-        onMessage(messaging, (payload) => {
-          console.log("[FCM] Message received in foreground:", payload)
+        unsub = onMessage(messaging, (payload) => {
           if (payload.notification) {
             toast(payload.notification.title || "SevaSetu Alert", {
               description: payload.notification.body,
@@ -37,12 +53,17 @@ export function FCMSubscriber() {
           }
         })
       } catch (err) {
-        console.warn("[FCM] Initialization failed/skipped.", err)
+        console.warn("[FCM] initialization skipped:", err)
       }
     }
 
     initFCM()
-  }, [])
+
+    return () => {
+      cancelled = true
+      if (unsub) unsub()
+    }
+  }, [mode])
 
   return null
 }

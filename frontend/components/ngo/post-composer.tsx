@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import { apiFetch } from "@/frontend/lib/mode/api-client"
 
 type Parsed = {
   title: string
@@ -51,7 +52,7 @@ export function PostComposer() {
     setParsing(true)
     setParsed(null)
     try {
-      const res = await fetch("/api/needs/parse", {
+      const res = await apiFetch("/api/needs/parse", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -121,6 +121,9 @@ export function useAppMode(): ModeContextValue {
   return ctx
 }
 
+/** Convenience alias used throughout the app. */
+export const useMode = useAppMode
+
 /**
  * Synchronous read of the current mode without React.
  * Useful inside the api-client and other non-React modules.

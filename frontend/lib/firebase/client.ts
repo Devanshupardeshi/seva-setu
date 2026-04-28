@@ -77,6 +77,12 @@ export function getFirebaseStorage(): FirebaseStorage | null {
   }
 }
 
+// Short aliases used throughout the app.
+export const getApp = getFirebaseApp
+export const getDb = getFirebaseDb
+export const getAuthClient = getFirebaseAuth
+export const getStorageClient = getFirebaseStorage
+
 // Legacy compatibility exports — prefer the getters above.
 // These are evaluated lazily at first import; if Firebase isn't configured
 // they will be `null` and consumers must guard accordingly.

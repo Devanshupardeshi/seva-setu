@@ -15,8 +15,10 @@ import {
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { Applicant } from "@/lib/mock-ngo-data"
-import { db } from "@/lib/firebase/client"
+import { getDb } from "@/lib/firebase/client"
 import { doc, setDoc, updateDoc } from "firebase/firestore"
+import { apiFetch } from "@/frontend/lib/mode/api-client"
+import { useMode } from "@/frontend/lib/mode/mode-context"
 
 const statusStyles: Record<Applicant["status"], string> = {
   new: "bg-muted text-muted-foreground",
@@ -37,6 +39,7 @@ export function ApplicantRow({
   const [status, setStatus] = useState(applicant.status)
   const [loading, setLoading] = useState(false)
   const [messaged, setMessaged] = useState(false)
+  const { isActual } = useMode()
 
   const initials = volunteer.name
     .split(" ")
@@ -47,23 +50,29 @@ export function ApplicantRow({
   const handleStatusUpdate = async (newStatus: Applicant["status"]) => {
     setLoading(true)
     try {
-      // In a real app, we'd have a 'matches' document for this applicant/need.
-      // We'll update Firestore if we have a needId.
-      if (needId) {
+      // Only persist to Firestore in Actual Mode and when configured.
+      const db = isActual ? getDb() : null
+      if (isActual && needId && db) {
         const matchId = `m_${volunteer.id}_${needId}`
-        await updateDoc(doc(db, "matches", matchId), {
-          status: newStatus,
-          updatedAt: new Date().toISOString(),
-        }).catch(() => {
-          // If update fails (e.g. doc doesn't exist), we'll try to create it
-          return setDoc(doc(db, "matches", matchId), {
-            id: matchId,
-            volunteerId: volunteer.id,
-            needId: needId,
+        const ref = doc(db, "matches", matchId)
+        try {
+          await updateDoc(ref, {
             status: newStatus,
             updatedAt: new Date().toISOString(),
-          }, { merge: true })
-        })
+          })
+        } catch {
+          await setDoc(
+            ref,
+            {
+              id: matchId,
+              volunteerId: volunteer.id,
+              needId,
+              status: newStatus,
+              updatedAt: new Date().toISOString(),
+            },
+            { merge: true },
+          )
+        }
       }
       setStatus(newStatus)
     } catch (err) {
@@ -76,13 +85,13 @@ export function ApplicantRow({
   const handleMessage = async () => {
     setLoading(true)
     try {
-      // Simulate sending a Twilio/FCM message
-      await fetch("/api/mobilize", {
+      await apiFetch("/api/mobilize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          incidentId: needId ?? `applicant_${volunteer.id}`,
           volunteerIds: [volunteer.id],
-          messageTemplate: `Hi ${volunteer.name}, this is Shiksha Kendra. We loved your profile for the teaching role! Are you free to chat?`,
+          messageTemplate: `Hi {{name}}, this is Shiksha Kendra. We loved your profile for the teaching role — are you free to chat?`,
         }),
       })
       setMessaged(true)

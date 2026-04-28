@@ -1,6 +1,6 @@
 const { initializeApp, cert, getApps } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
-const { volunteers, ngos, needs, matches, activeIncident } = require('../lib/mock-data');
+const { volunteers, ngos, needs, matches, activeIncident } = require('../frontend/lib/mock-data');
 
 // Try loading environment variables if they are not loaded
 require('dotenv').config({ path: '.env.local' });
