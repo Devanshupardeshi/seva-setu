@@ -5,11 +5,15 @@ import type { NextRequest } from "next/server"
  * Next.js 16 proxy (formerly middleware).
  *
  * Responsibilities:
- *   1. Auth-gate volunteer / ngo / command-center routes (cookie-based).
- *   2. Role-based redirects (volunteers cannot access command center).
- *   3. Mode propagation: lift the `app-mode` cookie into an `x-app-mode`
+ *   1. Mode propagation: lift the `app-mode` cookie into an `x-app-mode`
  *      request header so server components and API handlers can read it
  *      synchronously without re-parsing cookies.
+ *   2. Auth gating — ONLY in Actual Mode. Demo Mode is the public sandbox:
+ *      anyone can browse /volunteer, /ngo, /command-center to see the
+ *      prototype with mock data. The dashboards already render mock fixtures
+ *      via `useAppMode().isDemo`, so no login screen is needed.
+ *   3. Role-based redirects (volunteers cannot access command center) —
+ *      again, only in Actual Mode.
  */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -18,15 +22,26 @@ export function proxy(request: NextRequest) {
   const modeCookie = request.cookies.get("app-mode")?.value
   const mode = modeCookie === "actual" ? "actual" : "demo"
 
-  // Forward the mode as a header so handlers can resolveMode(request).
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set("x-app-mode", mode)
 
-  // ---- Route guards -----------------------------------------------------
+  // ---- Demo Mode = open sandbox ----------------------------------------
+  // Skip every auth / role gate so reviewers can poke around freely.
+  if (mode === "demo") {
+    // If a logged-out demo visitor lands on /login or /signup, send them
+    // straight into the volunteer dashboard so the demo "feels" logged in.
+    if (pathname === "/login" || pathname === "/signup") {
+      return NextResponse.redirect(new URL("/volunteer", request.url))
+    }
+    return NextResponse.next({ request: { headers: requestHeaders } })
+  }
+
+  // ---- Actual Mode: enforce auth ---------------------------------------
   const protectedPaths = ["/volunteer", "/ngo", "/command-center"]
   const isProtectedPath = protectedPaths.some((p) => pathname.startsWith(p))
 
-  // Exemptions: signup / onboarding / public NGO register are public.
+  // Public exemptions: signup / onboarding / NGO register are reachable
+  // even without a session because they're how new users join.
   const isPublicExemption =
     pathname.startsWith("/volunteer/onboarding") ||
     pathname.startsWith("/volunteer/signup") ||

@@ -7,26 +7,39 @@ import type {
   Volunteer,
 } from "./types"
 
-// ----- The current logged-in volunteer -----
+/**
+ * Mock fixtures themed around the Brahmaputra basin (Assam) — the same
+ * region as the live disaster command center demo (Dhemaji flood). Names,
+ * locations, languages and needs are chosen to reflect a realistic
+ * volunteer-coordination story along the river: Mishing weaver co-ops in
+ * Majuli, flood-displaced classrooms in Guwahati, Assamese-language
+ * trauma helplines in Tezpur, and so on.
+ *
+ * IDs (e.g. "v_priya", "n_shiksha", "need_html") are kept unchanged so
+ * mock-ngo-data, mock-incident-data and the Firestore seed script all
+ * keep working without edits.
+ */
+
+// ----- The current logged-in volunteer -----------------------------------
 export const currentVolunteer: Volunteer = {
   id: "v_priya",
-  name: "Priya Sharma",
+  name: "Anjali Borah",
   phone: "+91 98XXX 41203",
   avatarUrl: "/images/priya-avatar.jpg",
   location: {
-    lat: 19.1197,
-    lng: 72.8468,
-    label: "Andheri West, Mumbai",
+    lat: 26.1445,
+    lng: 91.7362,
+    label: "Zoo Road, Guwahati",
   },
   skills: [
     "Teaching",
-    "Python",
-    "Web design",
-    "Math",
+    "Assamese translation",
+    "First aid",
+    "Boat handling",
     "Public speaking",
-    "Translation (Hindi ↔ English)",
+    "Digital literacy",
   ],
-  languages: ["Hindi", "English", "Marathi"],
+  languages: ["Assamese", "Hindi", "English", "Bengali"],
   availability: ["sat", "sun"],
   experience: "student",
   remoteOk: true,
@@ -37,241 +50,241 @@ export const currentVolunteer: Volunteer = {
   joinedAt: "2025-11-02",
 }
 
-// ----- Partner NGOs -----
+// ----- Partner NGOs ------------------------------------------------------
 export const ngos: NGO[] = [
   {
     id: "n_shiksha",
-    name: "Shiksha Kendra",
-    darpanId: "MH/2021/0304512",
+    name: "Brahmaputra Education Trust",
+    darpanId: "AS/2021/0304512",
     verified: true,
-    location: { lat: 19.0596, lng: 72.8295, label: "Bandra West, Mumbai" },
+    location: { lat: 26.1158, lng: 91.7086, label: "Pan Bazaar, Guwahati" },
     focusAreas: ["Education", "Digital literacy"],
     rating: 4.9,
     volunteersActive: 128,
     since: "2014",
     about:
-      "Weekend learning center for 200+ children from Bandra settlements. Runs coding, math and English clubs.",
+      "Weekend learning centres for 200+ flood-affected children across Guwahati's char (river-island) settlements. Runs coding, math and Assamese-English clubs.",
   },
   {
     id: "n_goonj",
-    name: "Goonj Mumbai Chapter",
-    darpanId: "MH/2017/0122004",
+    name: "Goonj · North-East Cell",
+    darpanId: "AS/2017/0122004",
     verified: true,
-    location: { lat: 19.0821, lng: 72.8416, label: "Kurla, Mumbai" },
+    location: { lat: 26.1809, lng: 91.7531, label: "Beltola, Guwahati" },
     focusAreas: ["Disaster relief", "Material aid"],
     rating: 4.8,
     volunteersActive: 412,
     since: "2009",
     about:
-      "Urban-to-rural material flows. Activates rapid relief within 24 hours of any regional disaster.",
+      "Urban-to-riverine material flows. Activates rapid Brahmaputra flood relief within 24 hours across Dhemaji, Lakhimpur, Majuli and Morigaon.",
   },
   {
     id: "n_arogya",
-    name: "Arogya Friends Network",
-    darpanId: "MH/2019/0287119",
+    name: "Asha Health Network",
+    darpanId: "AS/2019/0287119",
     verified: true,
-    location: { lat: 19.1072, lng: 72.8302, label: "Khar, Mumbai" },
+    location: { lat: 26.6334, lng: 92.7926, label: "Mission Chariali, Tezpur" },
     focusAreas: ["Healthcare", "Mental health"],
     rating: 4.7,
     volunteersActive: 74,
     since: "2018",
     about:
-      "Free mental-health helpline and monthly community health camps across Mumbai Suburban.",
+      "Free Assamese-language mental-health helpline and monthly community health camps across Sonitpur and Darrang districts.",
   },
   {
     id: "n_green",
-    name: "Green Pathways India",
-    darpanId: "MH/2020/0341776",
+    name: "Green Brahmaputra Society",
+    darpanId: "AS/2020/0341776",
     verified: true,
-    location: { lat: 19.1551, lng: 72.8417, label: "Versova, Mumbai" },
-    focusAreas: ["Climate", "Coastal restoration"],
+    location: { lat: 26.9527, lng: 94.1709, label: "Garmur, Majuli Island" },
+    focusAreas: ["Climate", "River restoration"],
     rating: 4.6,
     volunteersActive: 96,
     since: "2016",
     about:
-      "Versova beach cleanups, mangrove replanting, and climate literacy workshops in BMC schools.",
+      "Riverbank erosion mapping, bamboo embankment building and climate literacy in Majuli's satras and BTC schools.",
   },
   {
     id: "n_disha",
-    name: "Disha Women's Collective",
-    darpanId: "MH/2022/0401223",
+    name: "Mahila Mukti Sangha",
+    darpanId: "AS/2022/0401223",
     verified: true,
-    location: { lat: 19.0728, lng: 72.8826, label: "Dharavi, Mumbai" },
+    location: { lat: 27.4728, lng: 94.9119, label: "Chowkidinghee, Dibrugarh" },
     focusAreas: ["Gender", "Livelihoods"],
     rating: 4.9,
     volunteersActive: 54,
     since: "2015",
     about:
-      "Skill training, micro-entrepreneurship and legal aid for 3,000+ women across Dharavi and Sion.",
+      "Skill training, micro-entrepreneurship and legal aid for 3,000+ Mishing and tea-garden women across Upper Assam.",
   },
   {
     id: "n_anna",
-    name: "Anna Sahyog",
-    darpanId: "MH/2018/0209864",
+    name: "Ahara Sahyog Assam",
+    darpanId: "AS/2018/0209864",
     verified: true,
-    location: { lat: 19.1075, lng: 72.8677, label: "Santacruz East, Mumbai" },
+    location: { lat: 26.7509, lng: 94.2037, label: "AT Road, Jorhat" },
     focusAreas: ["Food security", "Zero waste"],
     rating: 4.8,
     volunteersActive: 188,
     since: "2013",
     about:
-      "Surplus-food rescue network across 140 restaurants, redistributing 8,000+ meals weekly.",
+      "Surplus-food rescue network across 140 restaurants in Jorhat, Dibrugarh and Sivasagar — redistributing 8,000+ meals weekly to flood relief camps.",
   },
 ]
 
-// ----- Opportunities / Needs -----
+// ----- Opportunities / Needs --------------------------------------------
 export const needs: Need[] = [
   {
     id: "need_html",
     ngoId: "n_shiksha",
-    title: "Teach basic HTML to 10 kids",
+    title: "Teach digital literacy to 10 char-school kids",
     description:
-      "Saturday workshop for 10–12 year olds. 5 laptops available. Your session will cover what a web page is and help kids build their first page about themselves.",
-    skillsRequired: ["Teaching", "Web design"],
-    languagesPreferred: ["Hindi", "English"],
+      "Saturday workshop for 10–12 year olds at our Pan Bazaar learning centre. 5 laptops available. Help kids — most from chars displaced by the last Brahmaputra flood — build their first webpage in Assamese.",
+    skillsRequired: ["Teaching", "Digital literacy"],
+    languagesPreferred: ["Assamese", "Hindi", "English"],
     startTime: "2026-04-25T15:00:00+05:30",
     durationHours: 2,
-    location: { lat: 19.0596, lng: 72.8295, label: "Bandra West, Mumbai" },
+    location: { lat: 26.1158, lng: 91.7086, label: "Pan Bazaar, Guwahati" },
     urgency: "routine",
     slots: 1,
     filled: 0,
     tags: ["education", "women-only"],
     matchScore: 96,
     matchReason:
-      "You've run two teaching gigs, know web design, and speak Hindi + English — a strong fit for this cohort.",
+      "You've run two teaching gigs, know digital literacy, and speak Assamese + Hindi — a strong fit for this char cohort.",
   },
   {
     id: "need_translate",
     ngoId: "n_goonj",
-    title: "Remote: Tamil ↔ English translation",
+    title: "Remote: Assamese ↔ English translation · flood reports",
     description:
-      "Translate field reports from Tamil Nadu cyclone relief teams for the central coordination cell. Fully remote, pick any 3-hour block this weekend.",
+      "Translate field reports from Dhemaji and Lakhimpur relief teams for the central coordination cell. Fully remote, pick any 3-hour block this weekend.",
     skillsRequired: ["Translation"],
-    languagesPreferred: ["Tamil", "English"],
+    languagesPreferred: ["Assamese", "English"],
     startTime: "2026-04-26T10:00:00+05:30",
     durationHours: 3,
-    location: { lat: 19.0821, lng: 72.8416, label: "Remote" },
+    location: { lat: 26.1809, lng: 91.7531, label: "Remote" },
     urgency: "priority",
     slots: 4,
     filled: 1,
     tags: ["disaster", "remote"],
     matchScore: 82,
     matchReason:
-      "You flagged translation experience during onboarding — Goonj prioritises returning volunteers.",
+      "You flagged Assamese translation experience during onboarding — Goonj prioritises returning volunteers.",
   },
   {
     id: "need_helpline",
     ngoId: "n_arogya",
-    title: "Evening helpline listener",
+    title: "Evening helpline listener · Assamese",
     description:
-      "Two-hour empathetic listening shift on the Arogya helpline. Training module included. Must be calm, patient, and confidential.",
+      "Two-hour empathetic listening shift on the Asha helpline for flood-displaced families. Training module included. Must be calm, patient, and confidential.",
     skillsRequired: ["Active listening", "Empathy"],
-    languagesPreferred: ["Hindi", "Marathi"],
+    languagesPreferred: ["Assamese", "Bengali"],
     startTime: "2026-04-25T19:00:00+05:30",
     durationHours: 2,
-    location: { lat: 19.1072, lng: 72.8302, label: "Khar, Mumbai" },
+    location: { lat: 26.6334, lng: 92.7926, label: "Mission Chariali, Tezpur" },
     urgency: "routine",
     slots: 3,
     filled: 1,
     tags: ["health", "women-only"],
     matchScore: 71,
     matchReason:
-      "You listed public speaking and you're in Andheri — 5.8 km to the helpline office.",
+      "You listed public speaking and Assamese — a strong cultural fit for our trauma helpline.",
   },
   {
     id: "need_beach",
     ngoId: "n_green",
-    title: "Versova beach cleanup · Sunday dawn",
+    title: "Brahmaputra riverbank cleanup · Sunday dawn",
     description:
-      "Join 60 others for a 6 AM beach cleanup. Bags, gloves and breakfast provided. Great for groups — bring friends.",
+      "Join 60 others for a 6 AM cleanup along the Majuli ghat. Bags, gloves and breakfast (jolpan + tea) provided. Great for groups — bring friends.",
     skillsRequired: ["Physical activity"],
     startTime: "2026-04-26T06:00:00+05:30",
     durationHours: 3,
-    location: { lat: 19.1551, lng: 72.8417, label: "Versova Beach, Mumbai" },
+    location: { lat: 26.9527, lng: 94.1709, label: "Garmur Ghat, Majuli" },
     urgency: "routine",
     slots: 20,
     filled: 14,
     tags: ["environment"],
     matchScore: 64,
     matchReason:
-      "Nearby and social. A good reset weekend if you don't want to teach this Saturday.",
+      "You've been on the platform for a year and Majuli is a 6-hour ferry-and-bus from Guwahati — overnight stay arranged.",
   },
   {
     id: "need_poster",
     ngoId: "n_disha",
-    title: "One-time: Design Women's Day posters",
+    title: "One-time: Bihu posters for Mishing weavers' co-op",
     description:
-      "Remote design brief for 4 posters (Instagram + print). Brief and brand assets shared on acceptance. Turnaround: 5 days.",
-    skillsRequired: ["Graphic design", "Web design"],
+      "Remote design brief for 4 Bihu posters (Instagram + print) showcasing Mishing handloom weavers. Brief and brand assets shared on acceptance. Turnaround: 5 days.",
+    skillsRequired: ["Graphic design", "Digital literacy"],
     startTime: "2026-04-28T10:00:00+05:30",
     durationHours: 6,
-    location: { lat: 19.0728, lng: 72.8826, label: "Remote" },
+    location: { lat: 27.4728, lng: 94.9119, label: "Remote" },
     urgency: "routine",
     slots: 2,
     filled: 0,
     tags: ["design", "remote", "women-only"],
     matchScore: 88,
     matchReason:
-      "You have web design chops and Disha prefers first-time designers for this batch.",
+      "You have digital-design chops and Mahila Mukti prefers first-time designers for this batch.",
   },
 ]
 
-// ----- Pre-generated briefings (the Gemini output artifact) -----
+// ----- Pre-generated briefings (the Gemini output artifact) -------------
 export const briefings: Record<string, Briefing> = {
   need_html: {
     needId: "need_html",
     prep: [
-      "The kids already know how to open Chrome and type search queries — start from there.",
-      "Most speak Marathi at home but follow Hindi classroom instructions easily.",
-      "Keep vocabulary simple — no jargon like 'semantic markup' or 'DOM'.",
+      "Most kids come straight from char (river-island) primary schools — start by asking which song they sang at school assembly.",
+      "They speak Assamese at home and follow Hindi classroom instructions easily, but English vocabulary is limited.",
+      "Keep words simple — no jargon like 'semantic markup' or 'DOM'. Use Assamese for any abstract idea.",
     ],
     lessonPlan: [
-      "10 min — Ice-breaker: ask each kid their favourite website and why",
-      "20 min — What is a web page? Live-edit a <h1> and <p> on screen",
-      "30 min — Kids build a one-page site 'About me' with 5 elements",
-      "20 min — Peer showcase + save to pen-drive + group photo",
+      "10 min — Ice-breaker: each kid names their favourite Bihu song and why",
+      "20 min — What is a webpage? Live-edit a <h1> and <p> with their name in Assamese",
+      "30 min — Kids build a one-page site 'Mor xubhas' (My intro) with 5 elements",
+      "20 min — Peer showcase + save to pen-drive + group photo at the centre's veranda",
     ],
     whatToBring: [
       "Your laptop with VS Code pre-installed",
-      "A pen-drive (≥4 GB) with starter HTML files",
-      "A simple printed cheat-sheet of tags (we'll email a PDF by Friday)",
+      "A pen-drive (≥4 GB) with starter HTML files (Assamese + English)",
+      "A simple printed cheat-sheet of tags — we'll email a bilingual PDF by Friday",
     ],
     culturalNotes: [
-      "Most kids come straight from Hindi-medium schools — offer Hindi explanations whenever you use an English term.",
-      "Use first names warmly. 'Didi' or 'Priya didi' will feel natural to them.",
-      "Cameras on phones are OK but ask teachers before posting any photos online.",
+      "Most kids are first-generation literate — offer Assamese explanations whenever you use an English term.",
+      "Use first names warmly. 'Baidew' or 'Anjali baidew' will feel natural to them.",
+      "Cameras on phones are OK but ask the centre coordinator before posting any photos online.",
     ],
     safety: [
-      "The center is a first-floor walk-up; the gate shuts at 7 PM.",
-      "For any incident, call Shiksha Kendra coordinator Meena: +91 98XXX 00912.",
+      "The centre is a first-floor walk-up off Pan Bazaar; the gate shuts at 7 PM.",
+      "For any incident, call Brahmaputra Trust coordinator Manashi: +91 376-XXX-00912.",
       "Session is supervised — a staff teacher will be in the room throughout.",
     ],
     route: {
-      mode: "Metro + walk",
-      distanceKm: 6.4,
-      etaMin: 34,
+      mode: "City bus + walk",
+      distanceKm: 4.6,
+      etaMin: 24,
       landmarks: [
-        "Andheri station (starting)",
-        "Mumbai Metro Line 1 → DN Nagar → Change to Line 2A",
-        "Get off at Bandra BKC; 6-min walk to Shiksha Kendra",
+        "Zoo Road (your stop)",
+        "ASTC bus to Paltan Bazaar",
+        "5-min walk via MG Road to Pan Bazaar centre",
       ],
     },
   },
   inc_dhemaji: {
     needId: "inc_dhemaji",
     prep: [
-      "Check your personal safety gear (boots, raincoat, flashlight).",
+      "Check your personal safety gear (gum-boots, raincoat, flashlight, mosquito repellent).",
       "Review the disaster mobilization protocol for Red severity incidents.",
-      "Ensure your phone is fully charged and you have a power bank.",
+      "Ensure your phone is fully charged and you have a power bank — Dhemaji towers are intermittent.",
     ],
     whatToBring: [
-      "Personal ID and SevaSetu digital ID card.",
-      "Emergency first aid kit.",
-      "Water bottle and energy bars for 6 hours.",
+      "Personal ID and SevaSetu digital ID card",
+      "Emergency first-aid kit",
+      "Water bottle and dry energy snacks (chura/laru) for 6 hours",
     ],
     culturalNotes: [
-      "Dhemaji is a sensitive zone; follow local authorities' instructions without question.",
-      "Respect local customs when entering relief camps.",
+      "Dhemaji is a sensitive border zone; follow local authorities' instructions without question.",
+      "Respect local customs when entering Mishing relief camps — remove footwear at the namghar.",
     ],
     safety: [
       "Do not enter water deeper than knee level without a life jacket.",
@@ -279,19 +292,19 @@ export const briefings: Record<string, Briefing> = {
       "Maintain radio/phone silence unless reporting an emergency.",
     ],
     route: {
-      mode: "Emergency Transit",
+      mode: "Emergency transit (NDRF convoy)",
       distanceKm: 18.2,
       etaMin: 45,
       landmarks: [
-        "Starting from Staging Area A",
-        "NH-15 (Restricted Access)",
-        "Dhemaji Town Gate",
+        "Starting from Staging Area A (Silapathar)",
+        "NH-15 (restricted access)",
+        "Dhemaji town gate",
       ],
     },
   },
 }
 
-// ----- The current user's match history -----
+// ----- The current user's match history --------------------------------
 export const matches: Match[] = [
   {
     id: "m_next",
@@ -308,7 +321,8 @@ export const matches: Match[] = [
     acceptedAt: "2026-03-29T06:00:00+05:30",
     completedAt: "2026-03-29T09:00:00+05:30",
     rating: 5,
-    reviewText: "Priya organised a whole cleanup pod herself. Hope she comes back.",
+    reviewText:
+      "Anjali baidew organised an entire Majuli cleanup pod herself. Hope she comes back next month.",
   },
   {
     id: "m_past_2",
@@ -321,7 +335,7 @@ export const matches: Match[] = [
   },
 ]
 
-// ----- A live incident for the Disaster Command Center (session 4) -----
+// ----- A live incident for the Disaster Command Center (session 4) ------
 export const activeIncident: Incident = {
   id: "inc_dhemaji",
   type: "flood",
@@ -343,7 +357,7 @@ export const activeIncident: Incident = {
   respondersOnSite: 91,
 }
 
-// ----- Government / Disaster Cell NGO for incidents -----
+// ----- Government / Disaster Cell NGO for incidents ---------------------
 export const govtNgo: NGO = {
   id: "n_govt",
   name: "District Disaster Management Authority",
@@ -354,18 +368,18 @@ export const govtNgo: NGO = {
   rating: 5.0,
   volunteersActive: 1200,
   since: "1999",
-  about: "The primary response agency for Dhemaji district.",
+  about: "The primary response agency for Dhemaji district along the Brahmaputra basin.",
 }
 
 export const incidentOperator = {
-  name: "Comm. Rajesh Kumar",
+  name: "Aarti Phukan, IAS",
   role: "Incident Commander",
   region: "Dhemaji District",
   office: "DDMA · Dhemaji",
   badgeId: "DDMA-9921",
 }
 
-// ----- Helpers -----
+// ----- Helpers ----------------------------------------------------------
 export function getNeedById(id: string): Need | undefined {
   const found = needs.find((n) => n.id === id)
   if (found) return found
@@ -376,10 +390,10 @@ export function getNeedById(id: string): Need | undefined {
       id: activeIncident.id,
       ngoId: "n_govt",
       title: activeIncident.title,
-      description: `Active ${activeIncident.type} incident. Emergency responders needed immediately for ${activeIncident.skillsNeeded.map(s => s.skill).join(", ")}.`,
-      skillsRequired: activeIncident.skillsNeeded.map(s => s.skill),
+      description: `Active ${activeIncident.type} incident on the Brahmaputra. Emergency responders needed immediately for ${activeIncident.skillsNeeded.map((s) => s.skill).join(", ")}.`,
+      skillsRequired: activeIncident.skillsNeeded.map((s) => s.skill),
       startTime: activeIncident.activatedAt,
-      durationHours: 12, // Standard shift
+      durationHours: 12,
       location: activeIncident.epicenter,
       urgency: "critical",
       slots: activeIncident.skillsNeeded.reduce((a, b) => a + b.needed, 0),
@@ -391,10 +405,12 @@ export function getNeedById(id: string): Need | undefined {
 
   return undefined
 }
+
 export function getNgoById(id: string) {
   if (id === "n_govt") return govtNgo
   return ngos.find((n) => n.id === id)
 }
+
 export function getBriefingById(id: string) {
   return briefings[id]
 }
