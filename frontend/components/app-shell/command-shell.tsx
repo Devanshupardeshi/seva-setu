@@ -35,15 +35,19 @@ export function CommandShell({
   operatorRole: string
   office: string
   incidentTitle: string
-  severity: "yellow" | "orange" | "red"
+  severity: "low" | "medium" | "high" | "critical"
   activeSince: string
 }) {
   const pathname = usePathname()
+  const severityTone: "yellow" | "orange" | "red" =
+    severity === "critical" ? "red" : severity === "high" ? "orange" : "yellow"
+  const severityLabel =
+    severity === "critical" ? "RED" : severity === "high" ? "ORANGE" : severity === "medium" ? "YELLOW" : "LOW"
   const severityColor = {
     yellow: "bg-yellow-500/15 text-yellow-700 border-yellow-500/30",
     orange: "bg-accent/15 text-accent-foreground border-accent/40",
     red: "bg-destructive/15 text-destructive border-destructive/40",
-  }[severity]
+  }[severityTone]
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -51,16 +55,16 @@ export function CommandShell({
       <div
         className={cn(
           "border-b px-4 py-2 text-center text-xs md:text-sm",
-          severity === "red"
+          severityTone === "red"
             ? "border-destructive/30 bg-destructive/10 text-destructive"
-            : severity === "orange"
+            : severityTone === "orange"
               ? "border-accent/30 bg-accent/10 text-accent-foreground"
               : "border-yellow-500/30 bg-yellow-500/10",
         )}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 font-mono uppercase tracking-widest">
           <ShieldAlert className="h-3.5 w-3.5" />
-          <span>Active {severity} alert · {incidentTitle}</span>
+          <span>Active {severityLabel} alert · {incidentTitle}</span>
           <span className="opacity-60">· activated {activeSince}</span>
         </div>
       </div>

@@ -284,28 +284,80 @@ District Collector: Incident + Geofence created
 
 ## 📁 Project Structure
 
+The codebase is split cleanly into a **`backend/`** and **`frontend/`** directory so reviewers can see the separation of concerns at a glance. The Next.js App Router lives at the root and is the integration point that pulls both halves together.
+
 ```
 seva-setu/
 │
-├── 📁 app/                         # Next.js App Router
-│   ├── 📁 api/                     # AI & backend route handlers
-│   │   ├── voice-onboard/          #   → Gemini voice-to-profile extraction
+├── 📁 app/                         # Next.js App Router (thin route shells only)
+│   ├── 📁 api/                     # API entry points → delegate to backend handlers
+│   │   ├── onboarding/extract/     #   → Gemini voice-to-profile extraction
+│   │   ├── needs/parse/            #   → NL post → structured Need
 │   │   ├── match/                  #   → Vertex AI matching engine
-│   │   ├── mobilize/               #   → Disaster bulk notification
-│   │   └── reports/                #   → AI-generated PDF reports
-│   ├── 📁 volunteer/               # Volunteer dashboard & onboarding
-│   ├── 📁 ngo/                     # NGO management & impact reports
-│   ├── 📁 command-center/          # Government crisis coordination dashboard
-│   ├── 📁 impact/                  # Public SDG impact ledger
-│   └── 📁 login/                   # Shared auth flow (Phone OTP)
+│   │   ├── matches/[id]/briefing/  #   → Personalized volunteer briefing
+│   │   ├── mobilize/               #   → Bulk disaster notification (FCM)
+│   │   └── reports/csr/generate/   #   → AI-generated CSR PDF
+│   ├── 📁 volunteer/               # Volunteer pages
+│   ├── 📁 ngo/                     # NGO pages
+│   ├── 📁 command-center/          # Government command dashboard
+│   ├── 📁 corporate/ · impact/     # Corporate & public impact pages
+│   └── layout.tsx                  # Root layout — wraps app in <ModeProvider>
 │
-├── 📁 components/                  # Shared UI (shadcn/ui + custom)
-├── 📁 lib/                         # Core logic, Firestore types, utilities
-├── 📁 hooks/                       # Custom React hooks (Firestore, Auth)
-├── 📁 styles/                      # Global styles & theme
-├── 📁 public/                      # Static assets & PWA manifest
-└── 📁 scripts/                     # Seeding & utility scripts
+├── 📁 backend/                     # Server-only code, no React
+│   ├── 📁 ai/                      #   Gemini embeddings + vector search
+│   ├── 📁 config/                  #   Mode resolution + Gemini client
+│   ├── 📁 firebase/                #   Firebase Admin SDK
+│   ├── 📁 handlers/                #   One module per API route, mode-aware
+│   └── 📁 mock/                    #   Deterministic fixtures for Demo Mode
+│
+├── 📁 frontend/                    # Client + isomorphic code
+│   ├── 📁 components/              #   shadcn/ui + per-persona feature components
+│   │   ├── 📁 ui/                  #     shadcn primitives
+│   │   ├── 📁 app-shell/           #     Per-persona shells with the mode toggle
+│   │   └── mode-toggle.tsx         #     Demo ⇄ Actual switch
+│   ├── 📁 hooks/                   #   useFirestore, useDocument, useToast, …
+│   ├── 📁 lib/
+│   │   ├── 📁 firebase/            #     Browser SDK (lazy + null-safe)
+│   │   ├── 📁 mode/                #     ModeProvider, useMode, apiFetch wrapper
+│   │   ├── types.ts · utils.ts     #     Shared domain types & helpers
+│   │   └── mock-*.ts               #     UI fixtures
+│   └── 📁 styles/                  #   Global Tailwind / theme tokens
+│
+├── 📁 scripts/                     # Firestore seed scripts
+├── proxy.ts                        # Next 16 proxy: auth + mode-header injection
+├── tsconfig.json                   # @/components, @/lib, @/backend, @/frontend aliases
+└── package.json
 ```
+
+### Path aliases keep imports short
+
+| Alias              | Resolves to                |
+| ------------------ | -------------------------- |
+| `@/components/*`   | `./frontend/components/*`  |
+| `@/hooks/*`        | `./frontend/hooks/*`       |
+| `@/lib/*`          | `./frontend/lib/*`         |
+| `@/frontend/*`     | `./frontend/*`             |
+| `@/backend/*`      | `./backend/*`              |
+
+---
+
+## 🎚️ Demo Mode vs. Actual Mode
+
+Every header has a visible **mode toggle** that lets the user switch between two execution modes at runtime:
+
+| Mode       | Behavior                                                                                                                                                            |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Demo**   | Default. Every API endpoint returns deterministic mock data. No external services are called. Perfect for offline judging, screencasts, and instant load.          |
+| **Actual** | Activates the real backend. Endpoints run against Gemini, Vertex AI, Firestore, and FCM. Requires the relevant environment variables — degrades gracefully if not. |
+
+### How it works
+
+1. The toggle stores the user's choice in `localStorage` and the `app-mode` cookie.
+2. `proxy.ts` reads the cookie on every request and forwards it as the `x-app-mode` request header.
+3. Every `/api/*` route calls `resolveMode(request)` and dispatches to either `runDemo()` or `runActual()` on the matching handler in `backend/handlers/`.
+4. `frontend/lib/mode/api-client.ts` exposes an `apiFetch()` wrapper that automatically attaches the same header to every browser fetch — so the client and server always agree on the mode.
+
+This means **Actual Mode is fully production-ready** (no service-account keys leak into the bundle, no Gemini key reaches the browser) and **Demo Mode keeps the UX flawless** even when integrations aren't configured.
 
 ---
 

@@ -10,7 +10,7 @@ export default function ReportsPage() {
       operatorRole={incidentOperator.role}
       office={incidentOperator.office}
       incidentTitle="Incident Reports"
-      severity="yellow"
+      severity="medium"
       activeSince="--"
     >
       <div className="mx-auto max-w-5xl px-4 py-8 md:px-6 md:py-12">

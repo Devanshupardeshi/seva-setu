@@ -4,7 +4,6 @@ import { useEffect, useState, useMemo, memo, useCallback } from "react"
 import { Expand, Radio, Map as MapIcon, Globe, Crosshair } from "lucide-react"
 import { APIProvider, Map, Marker, useMap } from "@vis.gl/react-google-maps"
 import type { Responder, Sector } from "@/lib/mock-incident-data"
-import { google } from "@google-cloud/aiplatform/build/protos/protos"
 
 type Props = {
   responders: Responder[]

@@ -328,7 +328,7 @@ export const activeIncident: Incident = {
   title: "Dhemaji district · Brahmaputra flood",
   epicenter: { lat: 27.4836, lng: 94.5824, label: "Dhemaji, Assam" },
   radiusKm: 180,
-  severity: "red",
+  severity: "critical",
   activatedAt: "2026-04-21T18:02:00+05:30",
   skillsNeeded: [
     { skill: "First aid", needed: 40, filled: 28 },
@@ -361,7 +361,8 @@ export const incidentOperator = {
   name: "Comm. Rajesh Kumar",
   role: "Incident Commander",
   region: "Dhemaji District",
-  badgeId: "DDMA-9921"
+  office: "DDMA · Dhemaji",
+  badgeId: "DDMA-9921",
 }
 
 // ----- Helpers -----

@@ -82,17 +82,14 @@ export function IndiaHeatmap() {
 
   // Map Setup
   const mapCenter = { lat: 22.9734, lng: 78.6569 } // Central India View
-  const mapOptions = {
-    disableDefaultUI: true,
-    styles: [
-      { elementType: "geometry", stylers: [{ color: "#000000" }] },
-      { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-      { elementType: "labels.text.fill", stylers: [{ color: "#757575" }] },
-      { elementType: "labels.text.stroke", stylers: [{ color: "#212121" }] },
-      { featureType: "water", elementType: "geometry", stylers: [{ color: "#0d2b1f" }] }, // subtle primary tint
-      { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#113824" }] }
-    ]
-  }
+  const mapStyles = [
+    { elementType: "geometry", stylers: [{ color: "#000000" }] },
+    { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+    { elementType: "labels.text.fill", stylers: [{ color: "#757575" }] },
+    { elementType: "labels.text.stroke", stylers: [{ color: "#212121" }] },
+    { featureType: "water", elementType: "geometry", stylers: [{ color: "#0d2b1f" }] },
+    { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#113824" }] },
+  ]
 
   return (
     <section className="border-y border-border bg-muted/30">
@@ -162,7 +159,7 @@ export function IndiaHeatmap() {
                     defaultZoom={4.5}
                     gestureHandling={"cooperative"}
                     disableDefaultUI={true}
-                    options={mapOptions}
+                    styles={mapStyles}
                   >
                     <HeatmapOverlay regions={regions} />
                   </Map>
