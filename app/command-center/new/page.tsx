@@ -132,7 +132,7 @@ export default function NewIncidentPage() {
       operatorRole={incidentOperator.role}
       office={incidentOperator.office}
       incidentTitle="New incident · drafting"
-      severity={severity}
+      severity={severity === "red" ? "critical" : severity === "orange" ? "high" : "medium"}
       activeSince="now"
     >
       <div className="mx-auto max-w-5xl px-4 py-8 md:px-6">

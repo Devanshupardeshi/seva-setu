@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { VoiceRecorder } from "@/components/volunteer/voice-recorder"
 import { ExtractionStream } from "@/components/volunteer/extraction-stream"
 import { ProfileConfirm } from "@/components/volunteer/profile-confirm"
+import { apiFetch } from "@/frontend/lib/mode/api-client"
 
 const languages = [
   { code: "hi", label: "हिन्दी", en: "Hindi" },
@@ -36,7 +37,7 @@ export default function OnboardingPage() {
       if (blob) {
         const formData = new FormData()
         formData.append("audio", blob, "audio.webm")
-        const res = await fetch("/api/onboarding/extract", {
+        const res = await apiFetch("/api/onboarding/extract", {
           method: "POST",
           body: formData,
         })

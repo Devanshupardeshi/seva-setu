@@ -17,6 +17,7 @@ import { NgoShell } from "@/components/app-shell/ngo-shell"
 import { Button } from "@/components/ui/button"
 import { currentNgo, currentCoordinator } from "@/lib/mock-ngo-data"
 import { cn } from "@/lib/utils"
+import { apiFetch } from "@/frontend/lib/mode/api-client"
 
 interface GeneratedReport {
   title: string
@@ -34,15 +35,16 @@ export default function CSRReportPage() {
   const handleGenerate = async () => {
     setIsGenerating(true)
     try {
-      const response = await fetch("/api/reports/csr/generate", {
+      const response = await apiFetch("/api/reports/csr/generate", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ngoData: currentNgo,
           pastActivities: [
             { title: "HTML Workshop", hours: 48, beneficiaries: 120 },
-            { title: "Mobile Coding", hours: 32, beneficiaries: 85 }
-          ]
-        })
+            { title: "Mobile Coding", hours: 32, beneficiaries: 85 },
+          ],
+        }),
       })
       const data = await response.json()
       if (data.error) throw new Error(data.error)
